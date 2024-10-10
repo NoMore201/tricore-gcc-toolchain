@@ -10,4 +10,4 @@ then
 fi
 
 apt-get update
-apt-get -y install build-essential build-essential gcc-mingw-w64 g++-mingw-w64 texinfo flex bison libmpfr-dev libgmp-dev libmpc-dev zip
+apt-get -y install build-essential build-essential gcc-mingw-w64 g++-mingw-w64 texinfo flex bison libmpfr-dev libgmp-dev libmpc-dev zip libdebuginfod-dev
