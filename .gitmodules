@@ -4,7 +4,7 @@
 	branch = main
 [submodule "tricore-binutils-gdb"]
 	path = tricore-binutils-gdb
-	url = https://github.com/EEESlab/tricore-binutils-gdb.git
+	url = https://github.com/NoMore201/tricore-binutils-gdb.git
 	branch = master
 [submodule "tricore-newlib-cygwin"]
 	path = tricore-newlib-cygwin
