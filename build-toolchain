@@ -12,8 +12,8 @@ PARALLEL_JOBS=$(nproc)
 export PATH="$INSTALL_FOLDER/bin:$PATH"
 
 # set default build flags if not available in env
-CFLAGS="${CFLAGS:--O2}"
-CXXFLAGS="${CXXFLAGS:--O2}"
+CFLAGS="${CFLAGS:--O2 -gdwarf-3}"
+CXXFLAGS="${CXXFLAGS:--O2 -gdwarf-3}"
 LDFLAGS="${LDFLAGS:--static -s}"
 
 print_usage() {
