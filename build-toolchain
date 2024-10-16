@@ -303,7 +303,7 @@ if [[ "$task_string" == "build-gcc-stage2" || "$task_string" == "build-all" || "
     CFLAGS="$CFLAGS" \
     CXXFLAGS="$CXXFLAGS" \
     CFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
-    CPPFLAGS_FOR_TARGET='-g -O2 -gdwarf-3 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
+    CPPFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
     --target=tricore-elf \
     --enable-lib32 \
     --disable-lib64 \
@@ -465,8 +465,8 @@ if [[ "$task_string" == "build-gcc-stage2-win" || "$task_string" == "build-all" 
     LDFLAGS="$LDFLAGS" \
     CFLAGS="$CFLAGS" \
     CXXFLAGS="$CXXFLAGS" \
-    CFLAGS_FOR_TARGET='-O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
-    CPPFLAGS_FOR_TARGET='-O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
+    CFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
+    CPPFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
     --target=tricore-elf \
     --host=x86_64-w64-mingw32 \
     --enable-lib32 \
