@@ -67,6 +67,7 @@ jobs:
           export CXXFLAGS="-O2"
           export LDFLAGS="-static -s"
           ../configure --prefix /opt/gcc
+          make -j$(nproc)
 
       - name: Package
         run: |
