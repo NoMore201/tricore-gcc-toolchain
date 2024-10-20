@@ -33,7 +33,7 @@ jobs:
           export CXXFLAGS="-O2"
           export LDFLAGS="-static -s"
           ../configure --prefix /opt/gcc
-          make -j$(nproc)
+          make -j$(nproc) stamps/build-gcc-stage1
 
       - name: Package
         run: |
@@ -70,7 +70,7 @@ jobs:
           export CXXFLAGS="-O2"
           export LDFLAGS="-static -s"
           ../configure --prefix /opt/gcc
-          make -j$(nproc)
+          make -j$(nproc) stamps/build-gcc-stage1
 
       - name: Package
         run: |
