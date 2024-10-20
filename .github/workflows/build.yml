@@ -48,6 +48,7 @@ jobs:
           path: /opt/linux.zip
 
   build-windows:
+    name: Toolchain Windows build
     runs-on: windows-latest
     defaults:
       run:
@@ -58,7 +59,7 @@ jobs:
         with:
           msystem: UCRT64
           update: true
-          install: zip mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-mpfr mingw-w64-ucrt-x86_64-gmp mingw-w64-ucrt-x86_64-mpc mingw-w64-ucrt-x86_64-texinfo flex bison
+          install: zip mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-make mingw-w64-ucrt-x86_64-mpfr mingw-w64-ucrt-x86_64-gmp mingw-w64-ucrt-x86_64-mpc mingw-w64-ucrt-x86_64-texinfo flex bison
       - name: Build
         run: |
           mkdir build
@@ -67,7 +68,7 @@ jobs:
           export CXXFLAGS="-O2"
           export LDFLAGS="-static -s"
           ../configure --prefix /opt/gcc
-          make -j$(nproc)
+          mingw32-make -j$(nproc)
 
       - name: Package
         run: |
