@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get -y install build-essential build-essential gcc-mingw-w64 g++-mingw-w64 texinfo flex bison libmpfr-dev libgmp-dev libmpc-dev zip libdebuginfod-dev
+          sudo apt-get -y install build-essential build-essential texinfo flex bison libmpfr-dev libgmp-dev libmpc-dev zip libdebuginfod-dev
 
       - name: Build
         run: |
@@ -61,7 +61,7 @@ jobs:
         with:
           msystem: UCRT64
           update: true
-          install: zip mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-make mingw-w64-ucrt-x86_64-mpfr mingw-w64-ucrt-x86_64-gmp mingw-w64-ucrt-x86_64-mpc mingw-w64-ucrt-x86_64-texinfo flex bison
+          install: zip mingw-w64-ucrt-x86_64-toolchain make mingw-w64-ucrt-x86_64-mpfr mingw-w64-ucrt-x86_64-gmp mingw-w64-ucrt-x86_64-mpc mingw-w64-ucrt-x86_64-texinfo flex bison
       - name: Build
         run: |
           mkdir build
@@ -70,7 +70,7 @@ jobs:
           export CXXFLAGS="-O2"
           export LDFLAGS="-static -s"
           ../configure --prefix /opt/gcc
-          mingw32-make -j$(nproc)
+          make -j$(nproc)
 
       - name: Package
         run: |
