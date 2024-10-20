@@ -6,8 +6,6 @@ BINUTILS_SRCDIR := @with_binutils_src@
 NEWLIB_SRCDIR := @with_newlib_src@
 GCC_SRCDIR := @with_gcc_src@
 
-CONFIGURE_HOST = @configure_host@
-
 all: stamps/build-binutils-mcs stamps/build-binutils-tc stamps/build-gcc-stage2
 
 clean-binutils-tc:
@@ -25,8 +23,7 @@ stamps/build-binutils-mcs: $(BINUTILS_SRCDIR)
 	cd $(notdir $@) && $</configure \
 		--target=mcs-elf \
 		--program-prefix=mcs-elf- \
-		--prefix=$(INSTALL_DIR) \
-		$(CONFIGURE_HOST) \
+		--prefix=$(INSTALL_DIR)/linux \
 		--disable-threads \
 		--enable-nls \
 		--disable-itcl \
@@ -50,15 +47,14 @@ stamps/build-binutils-mcs: $(BINUTILS_SRCDIR)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
 
-stamps/build-binutils-tc: $(BINUTILS_SRCDIR)
+stamps/build-binutils-tc: $(BINUTILS_SRCDIR) stamps/build-binutils-mcs
 	rm -rf $@ $(notdir $@)
 	mkdir $(notdir $@)
 	cd $(notdir $@) && $</configure \
 		--target=tricore-elf \
 		--enable-targets=mcs-elf \
 		--program-prefix=tricore-elf- \
-		--prefix=$(INSTALL_DIR) \
-		$(CONFIGURE_HOST) \
+		--prefix=$(INSTALL_DIR)/linux \
 		--disable-threads \
 		--enable-nls \
 		--disable-itcl \
@@ -82,14 +78,14 @@ stamps/build-binutils-tc: $(BINUTILS_SRCDIR)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
 
-stamps/build-gcc-stage1: $(GCC_SRCDIR)
+stamps/build-gcc-stage1: $(GCC_SRCDIR) stamps/build-binutils-tc
 	rm -rf $@ $(notdir $@)
 	mkdir $(notdir $@)
 	cd $(notdir $@) && $</configure \
 		CFLAGS_FOR_TARGET='-g -O2 -gdwarf-3' \
 		CXXFLAGS_FOR_TARGET='-g -O2 -gdwarf-3' \
 		--target=tricore-elf \
-		--prefix=$(INSTALL_DIR) \
+		--prefix=$(INSTALL_DIR)/linux \
 		--enable-lib32 \
 		--disable-lib64 \
 		--enable-languages=c,c++ \
@@ -118,25 +114,26 @@ stamps/build-newlib: $(NEWLIB_SRCDIR) stamps/build-gcc-stage1
 	rm -rf $@ $(notdir $@)
 	mkdir $(notdir $@)
 	cd $(notdir $@) && $</configure \
-		CC_FOR_TARGET=$(INSTALL_DIR)/bin/tricore-elf-gcc \
-		CXX_FOR_TARGET=$(INSTALL_DIR)/bin/tricore-elf-c++ \
-		GCC_FOR_TARGET=$(INSTALL_DIR)/bin/tricore-elf-gcc \
-		AR_FOR_TARGET=$(INSTALL_DIR)/bin/tricore-elf-ar \
-		AS_FOR_TARGET=$(INSTALL_DIR)/bin/tricore-elf-as \
-		LD_FOR_TARGET=$(INSTALL_DIR)/bin/tricore-elf-ld \
-		NM_FOR_TARGET=$(INSTALL_DIR)/bin/tricore-elf-nm \
-		OBJDUMP_FOR_TARGET=$(INSTALL_DIR)/bin/tricore-elf-objdump \
-		RANLIB_FOR_TARGET=$(INSTALL_DIR)/bin/tricore-elf-ranlib \
-		STRIP_FOR_TARGET=$(INSTALL_DIR)/bin/tricore-elf-strip \
-		READELF_FOR_TARGET=$(INSTALL_DIR)/bin/tricore-elf-readelf \
+		CC_FOR_TARGET=$(INSTALL_DIR)/linux/bin/tricore-elf-gcc \
+		CXX_FOR_TARGET=$(INSTALL_DIR)/linux/bin/tricore-elf-c++ \
+		GCC_FOR_TARGET=$(INSTALL_DIR)/linux/bin/tricore-elf-gcc \
+		AR_FOR_TARGET=$(INSTALL_DIR)/linux/bin/tricore-elf-ar \
+		AS_FOR_TARGET=$(INSTALL_DIR)/linux/bin/tricore-elf-as \
+		LD_FOR_TARGET=$(INSTALL_DIR)/linux/bin/tricore-elf-ld \
+		NM_FOR_TARGET=$(INSTALL_DIR)/linux/bin/tricore-elf-nm \
+		OBJDUMP_FOR_TARGET=$(INSTALL_DIR)/linux/bin/tricore-elf-objdump \
+		RANLIB_FOR_TARGET=$(INSTALL_DIR)/linux/bin/tricore-elf-ranlib \
+		STRIP_FOR_TARGET=$(INSTALL_DIR)/linux/bin/tricore-elf-strip \
+		READELF_FOR_TARGET=$(INSTALL_DIR)/linux/bin/tricore-elf-readelf \
 		CFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffunction-sections -mfast-div -fno-common' \
 		CXXFLAGS_FOR_TARGET='-g -gdwarf-3 -O2  -ffunction-sections -mfast-div -fno-common' \
 		--target=tricore-elf \
-		--prefix=$(INSTALL_DIR) \
+		--prefix=$(INSTALL_DIR)/linux \
 		--host=i686-w64-mingw32 \
 		--build=i686-pc-mingw32
 	$(MAKE) -C $(notdir $@) all
 	$(MAKE) -C $(notdir $@) install
+	$(MAKE) -C $(notdir $@) install prefix=$(INSTALL_DIR)/win32
 	mkdir -p $(dir $@) && touch $@
 
 stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/build-newlib
@@ -148,8 +145,7 @@ stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/build-newlib
 		--target=tricore-elf \
 		--enable-lib32 \
 		--disable-lib64 \
-		--prefix=$(INSTALL_DIR) \
-		$(CONFIGURE_HOST) \
+		--prefix=$(INSTALL_DIR)/linux \
 		--enable-languages=c,c++ \
 		--enable-libstdcxx-debug-flags='-gdwarf-3 -g -O0 -D_GLIBCXX_ASSERTIONS' \
 		--enable-c99 \
@@ -171,5 +167,68 @@ stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/build-newlib
 		--disable-libssp \
 		--disable-test-suite
 	$(MAKE) -C $(notdir $@) all
+	$(MAKE) -C $(notdir $@) install
+	mkdir -p $(dir $@) && touch $@
+
+stamps/build-binutils-mcs-win: $(BINUTILS_SRCDIR) stamps/build-gcc-stage2
+	rm -rf $@ $(notdir $@)
+	mkdir $(notdir $@)
+	cd $(notdir $@) && $</configure \
+		--target=mcs-elf \
+		--program-prefix=mcs-elf- \
+		--host=x86_64-w64-mingw32 \
+		--prefix=$(INSTALL_DIR)/win32 \
+		--disable-threads \
+		--enable-nls \
+		--disable-itcl \
+		--disable-tk \
+		--disable-tcl \
+		--disable-winsup \
+		--disable-gdbtk \
+		--disable-libgui \
+		--disable-rda \
+		--disable-sid \
+		--disable-sim \
+		--disable-gdb \
+		--disable-newlib \
+		--disable-libgloss \
+		--disable-test-suite \
+		--enable-checking=release \
+		--with-gnu-ld \
+		--with-gnu-as \
+		--disable-werror
+	$(MAKE) -C $(notdir $@)
+	$(MAKE) -C $(notdir $@) install
+	mkdir -p $(dir $@) && touch $@
+
+stamps/build-binutils-tc-win: $(BINUTILS_SRCDIR) stamps/build-binutils-mcs-win
+	rm -rf $@ $(notdir $@)
+	mkdir $(notdir $@)
+	cd $(notdir $@) && $</configure \
+		--target=tricore-elf \
+		--enable-targets=mcs-elf \
+		--program-prefix=tricore-elf- \
+		--host=x86_64-w64-mingw32 \
+		--prefix=$(INSTALL_DIR)/win32 \
+		--disable-threads \
+		--enable-nls \
+		--disable-itcl \
+		--disable-tk \
+		--disable-tcl \
+		--disable-winsup \
+		--disable-gdbtk \
+		--disable-libgui \
+		--disable-rda \
+		--disable-sid \
+		--disable-sim \
+		--disable-gdb \
+		--disable-newlib \
+		--disable-libgloss \
+		--disable-test-suite \
+		--enable-checking=release \
+		--with-gnu-ld \
+		--with-gnu-as \
+		--disable-werror
+	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@

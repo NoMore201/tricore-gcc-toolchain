@@ -618,7 +618,6 @@ LIBOBJS
 with_gcc_src
 with_newlib_src
 with_binutils_src
-configure_host
 NEED_GCC_EXTERNAL_LIBRARIES
 BASH
 FGREP
@@ -678,7 +677,6 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
-with_host
 with_binutils_src
 with_newlib_src
 with_gcc_src
@@ -1311,9 +1309,6 @@ if test -n "$ac_init_help"; then
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
-  --with-host=x86_64-w64-mingw32
-                          Sets the host for the tools, you probably want
-                          nothing
   --with-binutils-src     Set binutils source path, use builtin source by
                           default
   --with-newlib-src       Set newlib source path, use builtin source by
@@ -3946,26 +3941,6 @@ then :
 
 else $as_nop
   NEED_GCC_EXTERNAL_LIBRARIES=false
-
-fi
-
-
-# Check whether --with-host was given.
-if test ${with_host+y}
-then :
-  withval=$with_host;
-else $as_nop
-  with_host=default
-
-fi
-
-
-if test "x$with_host" != xdefault
-then :
-  configure_host=--host=$with_host
-
-else $as_nop
-  configure_host=""
 
 fi
 

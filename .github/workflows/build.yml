@@ -11,7 +11,7 @@ on:
 
 jobs:
   linux-build:
-    name: Toolchain Linux build
+    name: Toolchain build
     runs-on: ubuntu-22.04
 
     steps:
@@ -33,48 +33,13 @@ jobs:
           export CXXFLAGS="-O2"
           export LDFLAGS="-static -s"
           ../configure --prefix /opt/gcc
-          make -j$(nproc) stamps/build-gcc-stage1
+          make -j$(nproc)
 
       - name: Package
         run: |
-          cd /opt/gcc
+          cd /opt/gcc/linux
           zip -r9 ../linux.zip .
-      
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          if-no-files-found: error
-          name: tricore-gcc-artifacts
-          path: /opt/linux.zip
-
-  build-windows:
-    name: Toolchain Windows build
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: msys2 {0}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - uses: msys2/setup-msys2@v2
-        with:
-          msystem: UCRT64
-          update: true
-          install: zip mingw-w64-ucrt-x86_64-toolchain make mingw-w64-ucrt-x86_64-mpfr mingw-w64-ucrt-x86_64-gmp mingw-w64-ucrt-x86_64-mpc mingw-w64-ucrt-x86_64-texinfo flex bison
-      - name: Build
-        run: |
-          mkdir build
-          cd build
-          export CFLAGS="-O2"
-          export CXXFLAGS="-O2"
-          export LDFLAGS="-static -s"
-          ../configure --prefix /opt/gcc
-          make -j$(nproc) stamps/build-gcc-stage1
-
-      - name: Package
-        run: |
-          cd /opt/gcc
+          cd /opt/gcc/win32
           zip -r9 ../win32.zip .
       
       - name: Upload artifacts
@@ -82,4 +47,5 @@ jobs:
         with:
           if-no-files-found: error
           name: tricore-gcc-artifacts
-          path: /opt/win32.zip
+          path: /opt/gcc/*.zip
+
