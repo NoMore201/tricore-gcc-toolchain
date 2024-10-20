@@ -103,7 +103,6 @@ stamps/build-gcc-stage1: $(GCC_SRCDIR)
 		--disable-shared \
 		--with-headers=yes \
 		--with-newlib=yes \
-		--with-sysroot=$(INSTALL_DIR)/tricore-elf \
 		--enable-mingw-wildcard \
 		--disable-libstdcxx-pch \
 		--enable-newlib-elix-level=3 \
@@ -136,7 +135,7 @@ stamps/build-newlib: $(NEWLIB_SRCDIR) stamps/build-gcc-stage1
 		--prefix=$(INSTALL_DIR) \
 		--host=i686-w64-mingw32 \
 		--build=i686-pc-mingw32
-	$(MAKE) -C $(notdir $@)
+	$(MAKE) -C $(notdir $@) all
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
 
@@ -171,6 +170,6 @@ stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/build-newlib
 		--disable-newlib-supplied-syscalls \
 		--disable-libssp \
 		--disable-test-suite
-	$(MAKE) -C $(notdir $@)
+	$(MAKE) -C $(notdir $@) all
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
