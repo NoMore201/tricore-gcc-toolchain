@@ -6,13 +6,31 @@ BINUTILS_SRCDIR := @with_binutils_src@
 NEWLIB_SRCDIR := @with_newlib_src@
 GCC_SRCDIR := @with_gcc_src@
 
-all: stamps/build-binutils-mcs stamps/build-binutils-tc stamps/build-gcc-stage2
+all: stamps/build-gcc-stage2-win
 
 clean-binutils-tc:
 	rm -rf build-binutils-tc stamps/build-binutils-tc
 
 clean-binutils-mcs:
 	rm -rf build-binutils-mcs stamps/build-binutils-mcs
+
+clean-gcc-stage1:
+	rm -rf build-gcc-stage1 stamps/build-gcc-stage1
+
+clean-newlib:
+	rm -rf build-newlib stamps/build-newlib
+
+clean-gcc-stage2:
+	rm -rf build-gcc-stage2 stamps/build-gcc-stage2
+
+clean-binutils-tc-win:
+	rm -rf build-binutils-tc-win stamps/build-binutils-tc-win
+
+clean-binutils-mcs-win:
+	rm -rf build-binutils-mcs-win stamps/build-binutils-mcs-win
+
+clean-gcc-stage2-win:
+	rm -rf build-gcc-stage2-win stamps/build-gcc-stage2-win
 
 clean:
 	rm -rf build-* stamps
