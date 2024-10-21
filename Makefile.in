@@ -232,3 +232,39 @@ stamps/build-binutils-tc-win: $(BINUTILS_SRCDIR) stamps/build-binutils-mcs-win
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
+	
+stamps/build-gcc-stage2-win: $(GCC_SRCDIR) stamps/build-binutils-tc-win
+	PATH=$(INSTALL_DIR)/linux/bin:
+	rm -rf $@ $(notdir $@)
+	mkdir $(notdir $@)
+	cd $(notdir $@) && PATH=$(INSTALL_DIR)/linux/bin:$$PATH $</configure \
+		CFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
+		CPPFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
+		--target=tricore-elf \
+		--enable-lib32 \
+		--disable-lib64 \
+		--host=x86_64-w64-mingw32 \
+		--prefix=$(INSTALL_DIR)/win32 \
+		--enable-languages=c,c++ \
+		--enable-libstdcxx-debug-flags='-gdwarf-3 -g -O0 -D_GLIBCXX_ASSERTIONS' \
+		--enable-c99 \
+		--enable-long-long \
+		--enable-checking \
+		--enable-nls \
+		--enable-static \
+		--disable-threads \
+		--disable-shared \
+		--with-headers=yes \
+		--with-gnu-ld \
+		--with-gnu-as \
+		--with-newlib=yes \
+		--enable-mingw-wildcard \
+		--disable-libstdcxx-pch \
+		--enable-newlib-elix-level=3 \
+		--enable-newlib-io-long-long \
+		--disable-newlib-supplied-syscalls \
+		--disable-libssp \
+		--disable-test-suite
+	$(MAKE) -C $(notdir $@) all
+	$(MAKE) -C $(notdir $@) install
+	mkdir -p $(dir $@) && touch $@
