@@ -1,63 +1,96 @@
 
-# Build instructions (Ubuntu)
+# Tricore GCC
+
+## Building (cross-compile)
+
+This chapter refers to cross-compiling from host architecture to `tricore-elf`
+target. In this scenario, build architecture is the same as the host 
+architecture.
+
+Instructions showed here are tested on Ubuntu 22.04 (see
+[Github Actions script](./.github/workflows/build.yml)), but should ideally
+work on other Linux distributions and also MSYS2 Windows environment.
 
 Clone the repository:
 
-```
+```sh
 git clone --recursive git@github.com:EEESlab/tricore-gcc-toolchain-11.3.0.git
 ```
 
-Launch the build script:
+Install build dependencies:
 
-```
-./build-toolchain
-```
-
-It is also possible to compile single components of the toolchain.
-
-```
-./build-toolchain --build --only binutils-tc
+```sh
+sudo apt-get update
+sudo apt-get -y install build-essential texinfo \
+    flex bison libmpfr-dev libgmp-dev libmpc-dev zip libdebuginfod-dev
 ```
 
-For further information on the available options:
+Create a temporary build directory and call the `configure` script
 
-```
-./build-toolchain --help
-```
-
-# Build instructions (Windows 10/11)
-
-Install the MSYS2 environment following the instructions available in the official website: https://www.msys2.org/
-
-Launch a MSYS2 MINGW32 shell from the Start menu
-
-Install the set of packages required for building a GNU toolchain:
-
-```
-pacman -S base diffutils texinfo git make automake-wrapper isl-devel mpc-devel mpfr-devel gcc mingw-w64-x86_64-gcc mingw-w64-cross-gcc mingw-w64-i686-isl mingw-w64-i686-mpc mingw-w64-i686-mpfr expect flex bison
+```sh
+mkdir build && cd build
+../configure --prefix=/path/to/prefix
+make -j$(nproc)
 ```
 
-Set the core.autocrlf property to false (to avoid the automatic convertion of LF endings into CRLF on Git):
+This will build and install everything into `/path/to/prefix`.
 
-```
-git config --global core.autocrlf false
-```
+It is also possible to compile single components of the toolchain. For further information on the available options, refer to `configure` script help page and
+the [Makefile](./Makefile.in).
 
-Clone the repository:
+## Building (canadian-cross)
 
-```
+Sometimes it may be useful to build a cross-compiler from architecture B to architecture C, by performing the build on a third architecture A. The reason
+is that setting up architecture B for cross-compilation may be not as easy as
+on architecture A. This is called a 
+[canadian cross](https://en.wikipedia.org/wiki/Cross_compiler#Canadian_Cross).
+
+In this case, the idea is to build Win32 tricore-elf-gcc (cross-compiler from
+Win32 to `tricore-elf`) directly on Linux due to easier setup and the 
+reproducibility of the environment.
+
+Canadian cross build is performed by the
+[Github Actions script](./.github/workflows/build.yml). First clone the
+toolchain repository:
+
+```sh
 git clone --recursive git@github.com:EEESlab/tricore-gcc-toolchain-11.3.0.git
 ```
 
-Set the path of the directory that will contain the toolchain in the INSTALL_PATH environment variable:
+Install build dependencies, including MinGW cross-compiler:
 
-```
-export INSTALL_PATH=<absolute path of target directory>
-```
-
-Launch the build script:
-
-```
-./build-toolchain-msys2 --all
+```sh
+sudo apt-get update
+sudo apt-get -y install build-essential texinfo \
+    flex bison libmpfr-dev libgmp-dev libmpc-dev zip libdebuginfod-dev \
+    gcc-mingw-w64 g++-mingw-w64
 ```
 
+First we need to build the linux -> tricore cross-compiler. Refer to the
+[Build cross-compile section](#building-cross-compile) on how to do so.
+
+When linux -> tricore cross-compiler is ready, we need to install the newlib
+also into the final Win32 prefix. To do so, switch to the linux build directory
+and call make by swapping the prefix variable:
+
+```sh
+cd build-linux/build-newlib
+make install prefix=/path/to/win32-prefix
+```
+
+Now modify `PATH` environment variable with the PATH to linux cross-compiler:
+
+```sh
+export PATH="/path/to/linux-prefix:$PATH"
+```
+
+Finally we configure and build the missing components with the following
+commands
+
+```sh
+mkdir build-win32 && cd build-win32
+../configure --prefix /path/to/win32-prefix --with-host=x86_64-w64-mingw32
+make -j$(nproc) stamps/build-binutils-tc
+export PATH="/opt/gcc/linux/bin:$PATH"
+make -j$(nproc) stamps/build-gcc-stage2-only
+```
