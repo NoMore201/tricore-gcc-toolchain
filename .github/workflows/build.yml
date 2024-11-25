@@ -21,10 +21,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get -y install build-essential build-essential texinfo \
-            flex bison libmpfr-dev libgmp-dev libmpc-dev zip libdebuginfod-dev \
-            gcc-mingw-w64 g++-mingw-w64
+          sudo ./scripts/install-deps
 
       - name: Build Linux
         run: |

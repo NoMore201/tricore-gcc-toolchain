@@ -20,9 +20,7 @@ git clone --recursive git@github.com:EEESlab/tricore-gcc-toolchain-11.3.0.git
 Install build dependencies:
 
 ```sh
-sudo apt-get update
-sudo apt-get -y install build-essential texinfo \
-    flex bison libmpfr-dev libgmp-dev libmpc-dev zip libdebuginfod-dev
+sudo ./scripts/install-deps
 ```
 
 Create a temporary build directory and call the `configure` script
