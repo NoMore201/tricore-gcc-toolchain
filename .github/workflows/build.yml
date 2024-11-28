@@ -32,7 +32,6 @@ jobs:
           export LDFLAGS="-static -s"
           ../configure --prefix /opt/gcc/linux
           make -j$(nproc)
-          mv /opt/gcc/linux/qemu-system-tricore /opt/gcc/linux/bin/
 
       - name: Build Win32
         run: |
@@ -49,7 +48,6 @@ jobs:
           export PATH="/opt/gcc/linux/bin:$PATH"
           make -j$(nproc) stamps/build-gcc-stage2-only
           make -j$(nproc) stamps/build-qemu
-          mv /opt/gcc/win32/qemu-system-tricore.exe /opt/gcc/win32/bin/
 
       - name: Package
         run: |
