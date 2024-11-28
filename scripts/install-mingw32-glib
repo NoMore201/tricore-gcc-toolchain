@@ -1,0 +1,42 @@
+#!/bin/sh
+
+set -e
+
+GLIB_SRC_URL="https://download.gnome.org/sources/glib/2.83/glib-2.83.0.tar.xz"
+
+if [ $# -ne 1 ]; then
+    echo "Script require install prefix path as parameters"
+    exit 1
+fi
+
+INSTALL_PREFIX=$1
+
+wget "$GLIB_SRC_URL"
+tar xJf glib-2.83.0.tar.xz
+cd glib-2.83.0
+
+cat > x86_64-w64-mingw32.txt <<HereDoc
+[binaries]
+c = 'x86_64-w64-mingw32-gcc'
+cpp = 'x86_64-w64-mingw32-g++'
+ar = 'x86_64-w64-mingw32-ar'
+windres = 'x86_64-w64-mingw32-windres'
+strip = 'x86_64-w64-mingw32-strip'
+
+[host_machine]
+system = 'windows'
+cpu_family = 'x86_64'
+cpu = 'x86_64'
+endian = 'little'
+HereDoc
+
+meson setup --cross-file x86_64-w64-mingw32.txt build-mingw --prefix="$INSTALL_PREFIX" --buildtype=release \
+    --default-library=static \
+    -Dintrospection=disabled \
+    -Ddtrace=disabled \
+    -Dsystemtap=disabled \
+    -Dsysprof=disabled \
+    -Dglib_debug=disabled
+cd build-mingw
+meson compile
+meson install
