@@ -10,3 +10,6 @@
 	path = tricore-newlib-cygwin
 	url = https://github.com/EEESlab/tricore-newlib-cygwin.git
 	branch = master
+[submodule "qemu"]
+	path = qemu
+	url = https://gitlab.com/qemu-project/qemu.git
