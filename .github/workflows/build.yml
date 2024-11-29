@@ -47,7 +47,6 @@ jobs:
           make -j$(nproc) stamps/build-binutils-tc
           export PATH="/opt/gcc/linux/bin:$PATH"
           make -j$(nproc) stamps/build-gcc-stage2-only
-          make -j$(nproc) stamps/build-qemu
 
       - name: Package
         run: |

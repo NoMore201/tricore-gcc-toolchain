@@ -1,3 +1,6 @@
+# GNU autoconf/automake artifacts
 autom4te.cache
 configure~
-BUILD
+
+# IDE config folders
+.vscode

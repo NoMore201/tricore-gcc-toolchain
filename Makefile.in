@@ -239,7 +239,7 @@ stamps/build-gcc-stage2-only: $(GCC_SRCDIR) stamps/install-deps
 stamps/build-qemu: $(QEMU_SRCDIR)
 	rm -rf $@ $(notdir $@)
 	mkdir $(notdir $@)
-	if test "$(QEMU_CONFIGURE_HOST)" = "--cross-prefix=x86_64-w64-mingw32-"; then cd $(notdir $@) && $(srcdir)/scripts/install-mingw32-deps $(INSTALL_DIR); fi
+	if test "$(QEMU_CONFIGURE_HOST)" = "--cross-prefix=x86_64-w64-mingw32-"; then cd $(notdir $@) && $(srcdir)/scripts/build-mingw32-deps $(INSTALL_DIR); fi
 	cd $(notdir $@) && $(QEMU_ENV_VARS) $</configure \
 		--prefix=$(INSTALL_DIR) \
 		$(QEMU_CONFIGURE_HOST) \
