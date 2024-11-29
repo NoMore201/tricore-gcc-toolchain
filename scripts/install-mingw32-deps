@@ -2,7 +2,8 @@
 
 set -e
 
-GLIB_SRC_URL="https://download.gnome.org/sources/glib/2.83/glib-2.83.0.tar.xz"
+GLIB_TARBALL="glib-2.83.0.tar.xz"
+GLIB_SRC_URL="https://download.gnome.org/sources/glib/2.83/$GLIB_TARBALL"
 
 if [ $# -ne 1 ]; then
     echo "Script require install prefix path as parameters"
@@ -11,8 +12,10 @@ fi
 
 INSTALL_PREFIX=$1
 
-wget "$GLIB_SRC_URL"
-tar xJf glib-2.83.0.tar.xz
+if [ ! -f $GLIB_TARBALL ]; then
+    wget "$GLIB_SRC_URL"
+fi
+tar xJf $GLIB_TARBALL
 cd glib-2.83.0
 
 cat > x86_64-w64-mingw32.txt <<HereDoc
