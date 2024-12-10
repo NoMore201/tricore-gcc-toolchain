@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  build:
-    name: Toolchain build
+  build-gcc:
+    name: GCC toolchain build
     runs-on: ubuntu-22.04
 
     steps:
@@ -21,7 +21,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo ./scripts/install-deps
+          sudo ./scripts/install-gcc-deps
 
       - name: Build Linux
         run: |
@@ -31,7 +31,7 @@ jobs:
           export CXXFLAGS="-O2"
           export LDFLAGS="-static -s"
           ../configure --prefix /opt/gcc/linux
-          make -j$(nproc)
+          make -j$(nproc) stamps/build-gcc-stage2
 
       - name: Build Win32
         run: |
@@ -51,9 +51,52 @@ jobs:
       - name: Package
         run: |
           cd /opt/gcc/linux
-          zip -r9 ../linux.zip .
+          zip -r9 ../gcc-linux.zip .
           cd /opt/gcc/win32
-          zip -r9 ../win32.zip .
+          zip -r9 ../gcc-win32.zip .
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: tricore-gcc-artifacts
+          path: /opt/gcc/*.zip
+  
+  build-qemu:
+    name: QEMU build
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install dependencies
+        run: |
+          sudo ./scripts/install-qemu-deps
+
+      - name: Build Linux
+        run: |
+          mkdir build-linux
+          cd build-linux
+          ../configure --prefix /opt/gcc/linux
+          make -j$(nproc) stamps/build-qemu
+
+      - name: Build Win32
+        run: |
+          mkdir build-win32
+          cd build-win32
+          ../configure --prefix /opt/gcc/win32 --with-host=x86_64-w64-mingw32
+          make -j$(nproc) stamps/build-qemu
+
+      - name: Package
+        run: |
+          cd /opt/gcc/linux
+          zip -r9 ../qemu-linux.zip .
+          cd /opt/gcc/win32
+          mv qemu-system-tricore.exe bin/
+          zip -r9 ../qemu-win32.zip bin share
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

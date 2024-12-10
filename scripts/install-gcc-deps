@@ -13,6 +13,4 @@ apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get -y install \
     build-essential texinfo \
     flex bison libmpfr-dev libgmp-dev libmpc-dev zip libdebuginfod-dev \
-    gcc-mingw-w64 g++-mingw-w64 mingw-w64-tools \
-    git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build \
-    python3-dev python3-pip curl
+    gcc-mingw-w64 g++-mingw-w64 mingw-w64-tools
