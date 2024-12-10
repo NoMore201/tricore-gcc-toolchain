@@ -244,6 +244,9 @@ stamps/build-qemu: $(QEMU_SRCDIR)
 		--prefix=$(INSTALL_DIR) \
 		$(QEMU_CONFIGURE_HOST) \
 		--target-list=tricore-softmmu \
+		--bindir=bin \
+		--datadir=share/qemu \
+		--localedir=share/locale \
 		--static \
 		--without-default-features
 	$(MAKE) -C $(notdir $@) all
