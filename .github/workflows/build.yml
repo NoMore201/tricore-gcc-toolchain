@@ -95,7 +95,6 @@ jobs:
           cd /opt/gcc/linux
           zip -r9 ../qemu-linux.zip bin/qemu-system-tricore share
           cd /opt/gcc/win32
-          mv qemu-system-tricore.exe bin/
           zip -r9 ../qemu-win32.zip bin/qemu-system-tricore.exe share
       
       - name: Upload artifacts
