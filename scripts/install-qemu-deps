@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -e
+
+if [ ! -f /etc/lsb_release ] && [ ! -f /etc/debian_version ]
+then
+    echo "Script is meant to install packages on Debian/Ubuntu based distributions"
+    echo "Please install dependencies manually on other distributions"
+    exit 1
+fi
+
+apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get -y install \
+    build-essential \
+    gcc-mingw-w64 g++-mingw-w64 mingw-w64-tools \
+    git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build \
+    python3-pip curl
+
+# Make sure MingGW compiler uses Posix threads
+update-alternatives --set x86_64-w64-mingw32-gcc /usr/bin/x86_64-w64-mingw32-gcc-posix
+update-alternatives --set x86_64-w64-mingw32-g++ /usr/bin/x86_64-w64-mingw32-g++-posix
+
+pip3 install --break-system-packages meson==1.4.0

@@ -617,6 +617,7 @@ LIBOBJS
 with_gcc_src
 with_newlib_src
 with_binutils_src
+qemu_configure_host
 configure_host
 NEED_GCC_EXTERNAL_LIBRARIES
 BASH
@@ -3704,6 +3705,14 @@ then :
 
 else $as_nop
   configure_host=""
+
+fi
+if test "x$with_host" != xdefault
+then :
+  qemu_configure_host=--cross-prefix=$with_host-
+
+else $as_nop
+  qemu_configure_host=""
 
 fi
 

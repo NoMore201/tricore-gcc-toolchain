@@ -5,10 +5,18 @@ INSTALL_DIR := @prefix@
 BINUTILS_SRCDIR := @with_binutils_src@
 NEWLIB_SRCDIR := @with_newlib_src@
 GCC_SRCDIR := @with_gcc_src@
+QEMU_SRCDIR := $(srcdir)/qemu
 
 CONFIGURE_HOST = @configure_host@
+QEMU_CONFIGURE_HOST = @qemu_configure_host@
 
-all: stamps/build-gcc-stage2
+ifeq ($(QEMU_CONFIGURE_HOST),--cross-prefix=x86_64-w64-mingw32-)
+	QEMU_ENV_VARS := PKG_CONFIG_PATH="$(INSTALL_DIR)/lib/pkgconfig" PKG_CONFIG_LIBDIR="$(INSTALL_DIR)/lib/pkgconfig"
+else
+	QEMU_ENV_VARS :=
+endif
+
+all: stamps/build-qemu stamps/build-gcc-stage2
 
 clean-binutils-tc:
 	rm -rf build-binutils-tc stamps/build-binutils-tc
@@ -27,6 +35,9 @@ clean-gcc-stage2:
 
 clean-gcc-stage2-only:
 	rm -rf build-gcc-stage2-only stamps/build-gcc-stage2-only
+
+clean-qemu:
+	rm -rf build-qemu stamps/build-qemu
 
 clean:
 	rm -rf build-* stamps
@@ -221,6 +232,23 @@ stamps/build-gcc-stage2-only: $(GCC_SRCDIR) stamps/install-deps
 		--disable-newlib-supplied-syscalls \
 		--disable-libssp \
 		--disable-test-suite
+	$(MAKE) -C $(notdir $@) all
+	$(MAKE) -C $(notdir $@) install
+	mkdir -p $(dir $@) && touch $@
+
+stamps/build-qemu: $(QEMU_SRCDIR)
+	rm -rf $@ $(notdir $@)
+	mkdir $(notdir $@)
+	if test "$(QEMU_CONFIGURE_HOST)" = "--cross-prefix=x86_64-w64-mingw32-"; then cd $(notdir $@) && $(srcdir)/scripts/build-mingw32-deps $(INSTALL_DIR); fi
+	cd $(notdir $@) && $(QEMU_ENV_VARS) $</configure \
+		--prefix=$(INSTALL_DIR) \
+		$(QEMU_CONFIGURE_HOST) \
+		--target-list=tricore-softmmu \
+		--bindir=bin \
+		--datadir=share/qemu \
+		--localedir=share/locale \
+		--static \
+		--without-default-features
 	$(MAKE) -C $(notdir $@) all
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@

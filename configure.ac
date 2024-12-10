@@ -32,6 +32,9 @@ AC_ARG_WITH(host,
 AS_IF([test "x$with_host" != xdefault],
 	[AC_SUBST(configure_host,--host=$with_host)],
 	[AC_SUBST(configure_host,"")])
+AS_IF([test "x$with_host" != xdefault],
+	[AC_SUBST(qemu_configure_host,--cross-prefix=$with_host-)],
+	[AC_SUBST(qemu_configure_host,"")])
 
 AC_ARG_WITH(binutils-src,
 	[AS_HELP_STRING([--with-binutils-src],[Set binutils source path, use builtin source by default])],

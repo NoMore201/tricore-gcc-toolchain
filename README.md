@@ -1,5 +1,16 @@
 
-# Tricore GCC
+# Tricore GNU compiler toolchain
+
+![ci build status](https://github.com/NoMore201/tricore-gcc-toolchain/actions/workflows/build.yml/badge.svg)
+
+C/C++ toolchain based on GCC 11.3 for AURIX Tricore architecture. It supports
+TriCore architectures 1.3, 1.3.1, 1.6, 1.6.1, 1.6.2 and 1.8. 
+
+Prebuilt packages are available in the
+[release section](https://github.com/NoMore201/tricore-gcc-toolchain/releases).
+
+> Note: Some feature in this fork are still waiting PR approval from upstream
+> repository [EEESlab/tricore-gcc-toolchain-11.3.0](https://github.com/EEESlab/tricore-gcc-toolchain-11.3.0)
 
 ## Building (cross-compile)
 
