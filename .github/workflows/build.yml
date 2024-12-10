@@ -102,5 +102,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: tricore-gcc-artifacts
+          name: tricore-qemu-artifacts
           path: /opt/gcc/*.zip
