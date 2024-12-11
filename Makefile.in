@@ -97,7 +97,7 @@ stamps/build-binutils-tc: $(BINUTILS_SRCDIR) stamps/build-binutils-mcs
 		--disable-rda \
 		--disable-sid \
 		--disable-sim \
-		--disable-gdb \
+		--enable-gdb \
 		--disable-newlib \
 		--disable-libgloss \
 		--disable-test-suite \
