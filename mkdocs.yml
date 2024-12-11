@@ -1,0 +1,11 @@
+site_name: Tricore GNU Toolchain
+repo_url: https://github.com/NoMore201/tricore-gcc-toolchain
+repo_name: tricore-gcc-toolchain
+theme:
+  name: material
+
+plugins: []
+
+nav:
+  - Home: index.md
+  - Changelog: changelog.md
