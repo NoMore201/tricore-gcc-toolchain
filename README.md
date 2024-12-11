@@ -9,8 +9,13 @@ TriCore architectures 1.3, 1.3.1, 1.6, 1.6.1, 1.6.2 and 1.8.
 Prebuilt packages are available in the
 [release section](https://github.com/NoMore201/tricore-gcc-toolchain/releases).
 
-> Note: Some feature in this fork are still waiting PR approval from upstream
-> repository [EEESlab/tricore-gcc-toolchain-11.3.0](https://github.com/EEESlab/tricore-gcc-toolchain-11.3.0)
+Documentation is published through Github Pages in [Docs](https://nomore201.github.io/tricore-gcc-toolchain/)
+
+> This repository is a downstream of
+> [EEESlab/tricore-gcc-toolchain-11.3.0](https://github.com/EEESlab/tricore-gcc-toolchain-11.3.0)
+> that aims to be a playground for new features and improvements with a faster
+> developement process and automated release management. All the meaningful
+> changes will be contributed back to upstream repository
 
 ## Building (cross-compile)
 
@@ -25,7 +30,7 @@ work on other Linux distributions and also MSYS2 Windows environment.
 Clone the repository:
 
 ```sh
-git clone --recursive git@github.com:EEESlab/tricore-gcc-toolchain-11.3.0.git
+git clone --recursive https://github.com/NoMore201/tricore-gcc-toolchain.git
 ```
 
 Install build dependencies:
