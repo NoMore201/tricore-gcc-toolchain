@@ -11,16 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      
-      - name: Extract commit SHA
-        shell: bash
-        run: |
-          echo "SHORT_SHA=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
-
       - name: Download artifacts from latest workflow
         uses: dawidd6/action-download-artifact@v3
         with:
@@ -30,13 +20,23 @@ jobs:
           workflow_conclusion: success
           skip_unpack: false
 
-      - name: Rename build artifacts
+      - name: Prepare linux package
         run: |
-          mv tricore-gcc-artifacts/linux.zip tricore-gcc-11.3.1-${{ env.SHORT_SHA }}-linux.zip
-          mv tricore-gcc-artifacts/win32.zip tricore-gcc-11.3.1-${{ env.SHORT_SHA }}-win32.zip
+          mkdir linux-bundle && cd linux-bundle
+          unzip ../tricore-gcc-artifacts/linux.zip
+          unzip ../tricore-qemu-artifacts/linux.zip
+          zip -r9X tricore-gcc-${{ github.ref_name }}-linux.zip ./*
+
+      - name: Prepare windows package
+        run: |
+          mkdir win32-bundle && cd win32-bundle
+          unzip ../tricore-gcc-artifacts/win32.zip
+          unzip ../tricore-qemu-artifacts/win32.zip
+          zip -r9X tricore-gcc-${{ github.ref_name }}-win32.zip ./*
 
       - name: Push release artifacts
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            *.zip
+            linux-bundle/*.zip
+            win32-bundle/*.zip
