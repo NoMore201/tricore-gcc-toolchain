@@ -3,10 +3,15 @@ repo_url: https://github.com/NoMore201/tricore-gcc-toolchain
 repo_name: tricore-gcc-toolchain
 theme:
   name: material
+  features:
+    - navigation.tabs
+    - navigation.top
+    - toc.integrate
 
 plugins: []
 
 nav:
   - Home: index.md
+  - Build: building.md
   - Changelog: changelog.md
   - Debuggin with QEMU: qemu-debug.md

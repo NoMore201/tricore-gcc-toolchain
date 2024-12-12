@@ -4,3 +4,6 @@ configure~
 
 # IDE config folders
 .vscode
+
+# Python venv
+.venv

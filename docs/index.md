@@ -17,9 +17,10 @@ includes the following software:
 
 ## Install
 
-Grab the latest release from
+Grab the latest pre-compiled toolchain from
 [GitHub releases](https://github.com/NoMore201/tricore-gcc-toolchain/releases).
-To build the toolchain manually from sources, please refer to the main
-[README.md](https://github.com/NoMore201/tricore-gcc-toolchain/blob/main/README.md).
+
+To build the toolchain manually from sources, please refer to the
+[build page](./building.md).
 
 
