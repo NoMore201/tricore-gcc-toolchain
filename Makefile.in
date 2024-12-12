@@ -129,12 +129,12 @@ stamps/build-binutils-tc: $(BINUTILS_SRCDIR) stamps/build-binutils-mcs stamps/bu
 		--prefix=$(INSTALL_DIR) \
 		$(CONFIGURE_HOST) \
 		--disable-threads \
-        --with-gmp-include=$(INSTALL_DIR)/deps/include \
-        --with-gmp-lib=$(INSTALL_DIR)/deps/lib \
-        --with-mpc-include=$(INSTALL_DIR)/deps/include \
-        --with-mpc-lib=$(INSTALL_DIR)/deps/lib \
-        --with-mpfr-include=$(INSTALL_DIR)/deps/include \
-        --with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
+		--with-gmp-include=$(INSTALL_DIR)/deps/include \
+		--with-gmp-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpc-include=$(INSTALL_DIR)/deps/include \
+		--with-mpc-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpfr-include=$(INSTALL_DIR)/deps/include \
+		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-nls \
 		--disable-itcl \
 		--disable-tk \
@@ -178,12 +178,12 @@ stamps/build-gcc-stage1: $(GCC_SRCDIR) stamps/build-binutils-tc stamps/build-gmp
 		--disable-shared \
 		--with-headers=yes \
 		--with-newlib=yes \
-        --with-gmp-include=$(INSTALL_DIR)/deps/include \
-        --with-gmp-lib=$(INSTALL_DIR)/deps/lib \
-        --with-mpc-include=$(INSTALL_DIR)/deps/include \
-        --with-mpc-lib=$(INSTALL_DIR)/deps/lib \
-        --with-mpfr-include=$(INSTALL_DIR)/deps/include \
-        --with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
+		--with-gmp-include=$(INSTALL_DIR)/deps/include \
+		--with-gmp-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpc-include=$(INSTALL_DIR)/deps/include \
+		--with-mpc-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpfr-include=$(INSTALL_DIR)/deps/include \
+		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-mingw-wildcard \
 		--disable-libstdcxx-pch \
 		--enable-newlib-elix-level=3 \

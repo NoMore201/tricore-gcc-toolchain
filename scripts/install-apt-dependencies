@@ -22,4 +22,10 @@ update-alternatives --set x86_64-w64-mingw32-gcc /usr/bin/x86_64-w64-mingw32-gcc
 update-alternatives --set x86_64-w64-mingw32-g++ /usr/bin/x86_64-w64-mingw32-g++-posix
 
 # Ubuntu meson version is too old for QEMU
-pip3 install --break-system-packages meson==1.4.0
+if grep "Ubuntu 22.04" /etc/lsb-release > /dev/null; then
+    pip_cmd="pip3 install"
+else
+    pip_cmd="pip3 install --break-system-packages"
+fi
+
+$pip_cmd meson==1.4.0
