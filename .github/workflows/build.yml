@@ -21,7 +21,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo ./scripts/install-gcc-deps
+          sudo ./scripts/install-apt-dependencies
+          sudo ./scripts/install-gcc-dependencies
 
       - name: Build Linux
         run: |
@@ -74,7 +75,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo ./scripts/install-qemu-deps
+          sudo ./scripts/install-apt-dependencies
+          sudo ./scripts/install-gcc-dependencies x86_64-w64-mingw32
 
       - name: Build Linux
         run: |

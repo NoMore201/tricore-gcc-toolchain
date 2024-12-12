@@ -11,13 +11,15 @@ fi
 
 apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get -y install \
-    build-essential \
+    build-essential texinfo curl \
+    flex bison zip libdebuginfod-dev \
     gcc-mingw-w64 g++-mingw-w64 mingw-w64-tools \
     git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build \
-    python3-pip curl
+    python3-pip
 
 # Make sure MingGW compiler uses Posix threads
 update-alternatives --set x86_64-w64-mingw32-gcc /usr/bin/x86_64-w64-mingw32-gcc-posix
 update-alternatives --set x86_64-w64-mingw32-g++ /usr/bin/x86_64-w64-mingw32-g++-posix
 
+# Ubuntu meson version is too old for QEMU
 pip3 install --break-system-packages meson==1.4.0
