@@ -231,6 +231,12 @@ stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/build-newlib
 		--disable-lib64 \
 		--prefix=$(INSTALL_DIR) \
 		$(CONFIGURE_HOST) \
+		--with-gmp-include=$(INSTALL_DIR)/deps/include \
+		--with-gmp-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpc-include=$(INSTALL_DIR)/deps/include \
+		--with-mpc-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpfr-include=$(INSTALL_DIR)/deps/include \
+		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-languages=c,c++ \
 		--enable-libstdcxx-debug-flags='-gdwarf-3 -g -O0 -D_GLIBCXX_ASSERTIONS' \
 		--enable-c99 \
@@ -266,6 +272,12 @@ stamps/build-gcc-stage2-only: $(GCC_SRCDIR)
 		--disable-lib64 \
 		--prefix=$(INSTALL_DIR) \
 		$(CONFIGURE_HOST) \
+		--with-gmp-include=$(INSTALL_DIR)/deps/include \
+		--with-gmp-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpc-include=$(INSTALL_DIR)/deps/include \
+		--with-mpc-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpfr-include=$(INSTALL_DIR)/deps/include \
+		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-languages=c,c++ \
 		--enable-libstdcxx-debug-flags='-gdwarf-3 -g -O0 -D_GLIBCXX_ASSERTIONS' \
 		--enable-c99 \
