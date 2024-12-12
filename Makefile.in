@@ -6,6 +6,9 @@ BINUTILS_SRCDIR := @with_binutils_src@
 NEWLIB_SRCDIR := @with_newlib_src@
 GCC_SRCDIR := @with_gcc_src@
 QEMU_SRCDIR := $(srcdir)/qemu
+GMP_SRCDIR := $(srcdir)/gmp-6.1.0
+MPFR_SRCDIR := $(srcdir)/mpfr-3.1.6
+MPC_SRCDIR := $(srcdir)/mpc-1.0.3
 
 CONFIGURE_HOST = @configure_host@
 QEMU_CONFIGURE_HOST = @qemu_configure_host@
@@ -42,8 +45,47 @@ clean-qemu:
 clean:
 	rm -rf build-* stamps
 
-stamps/install-deps: $(GCC_SRCDIR)
-	if test -f $</contrib/download_prerequisites; then cd $< && ./contrib/download_prerequisites; fi
+stamps/build-gmp: $(GMP_SRCDIR)
+	rm -rf $@ $(notdir $@)
+	mkdir $(notdir $@)
+	cd $(notdir $@) && $</configure \
+		--prefix=$(INSTALL_DIR)/deps \
+		$(CONFIGURE_HOST) \
+		--disable-assembly \
+		--enable-static \
+		--disable-shared
+	$(MAKE) -C $(notdir $@)
+	$(MAKE) -C $(notdir $@) install
+	mkdir -p $(dir $@) && touch $@
+
+stamps/build-mpfr: $(MPFR_SRCDIR) stamps/build-gmp
+	rm -rf $@ $(notdir $@)
+	mkdir $(notdir $@)
+	cd $(notdir $@) && $</configure \
+		--prefix=$(INSTALL_DIR)/deps \
+		$(CONFIGURE_HOST) \
+		--with-gmp-include=$(INSTALL_DIR)/deps/include \
+		--with-gmp-lib=$(INSTALL_DIR)/deps/lib \
+		--enable-static \
+		--disable-shared
+	$(MAKE) -C $(notdir $@)
+	$(MAKE) -C $(notdir $@) install
+	mkdir -p $(dir $@) && touch $@
+
+stamps/build-mpc: $(MPC_SRCDIR) stamps/build-gmp stamps/build-mpfr
+	rm -rf $@ $(notdir $@)
+	mkdir $(notdir $@)
+	cd $(notdir $@) && $</configure \
+		--prefix=$(INSTALL_DIR)/deps \
+		$(CONFIGURE_HOST) \
+		--with-gmp-include=$(INSTALL_DIR)/deps/include \
+		--with-gmp-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpfr-include=$(INSTALL_DIR)/deps/include \
+		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
+		--enable-static \
+		--disable-shared
+	$(MAKE) -C $(notdir $@)
+	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
 
 stamps/build-binutils-mcs: $(BINUTILS_SRCDIR)
@@ -77,7 +119,7 @@ stamps/build-binutils-mcs: $(BINUTILS_SRCDIR)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
 
-stamps/build-binutils-tc: $(BINUTILS_SRCDIR) stamps/build-binutils-mcs
+stamps/build-binutils-tc: $(BINUTILS_SRCDIR) stamps/build-binutils-mcs stamps/build-gmp stamps/build-mpfr stamps/build-mpc
 	rm -rf $@ $(notdir $@)
 	mkdir $(notdir $@)
 	cd $(notdir $@) && $</configure \
@@ -87,6 +129,12 @@ stamps/build-binutils-tc: $(BINUTILS_SRCDIR) stamps/build-binutils-mcs
 		--prefix=$(INSTALL_DIR) \
 		$(CONFIGURE_HOST) \
 		--disable-threads \
+		--with-gmp-include=$(INSTALL_DIR)/deps/include \
+		--with-gmp-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpc-include=$(INSTALL_DIR)/deps/include \
+		--with-mpc-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpfr-include=$(INSTALL_DIR)/deps/include \
+		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-nls \
 		--disable-itcl \
 		--disable-tk \
@@ -97,7 +145,7 @@ stamps/build-binutils-tc: $(BINUTILS_SRCDIR) stamps/build-binutils-mcs
 		--disable-rda \
 		--disable-sid \
 		--disable-sim \
-		--disable-gdb \
+		--enable-gdb \
 		--disable-newlib \
 		--disable-libgloss \
 		--disable-test-suite \
@@ -109,7 +157,7 @@ stamps/build-binutils-tc: $(BINUTILS_SRCDIR) stamps/build-binutils-mcs
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
 
-stamps/build-gcc-stage1: $(GCC_SRCDIR) stamps/install-deps stamps/build-binutils-tc
+stamps/build-gcc-stage1: $(GCC_SRCDIR) stamps/build-binutils-tc stamps/build-gmp stamps/build-mpfr stamps/build-mpc
 	rm -rf $@ $(notdir $@)
 	mkdir $(notdir $@)
 	cd $(notdir $@) && $</configure \
@@ -130,6 +178,12 @@ stamps/build-gcc-stage1: $(GCC_SRCDIR) stamps/install-deps stamps/build-binutils
 		--disable-shared \
 		--with-headers=yes \
 		--with-newlib=yes \
+		--with-gmp-include=$(INSTALL_DIR)/deps/include \
+		--with-gmp-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpc-include=$(INSTALL_DIR)/deps/include \
+		--with-mpc-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpfr-include=$(INSTALL_DIR)/deps/include \
+		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-mingw-wildcard \
 		--disable-libstdcxx-pch \
 		--enable-newlib-elix-level=3 \
@@ -166,7 +220,7 @@ stamps/build-newlib: $(NEWLIB_SRCDIR) stamps/build-gcc-stage1
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
 
-stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/install-deps stamps/build-newlib
+stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/build-newlib
 	rm -rf $@ $(notdir $@)
 	mkdir $(notdir $@)
 	cd $(notdir $@) && PATH=$(INSTALL_DIR)/bin:$$PATH $</configure \
@@ -177,6 +231,12 @@ stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/install-deps stamps/build-newlib
 		--disable-lib64 \
 		--prefix=$(INSTALL_DIR) \
 		$(CONFIGURE_HOST) \
+		--with-gmp-include=$(INSTALL_DIR)/deps/include \
+		--with-gmp-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpc-include=$(INSTALL_DIR)/deps/include \
+		--with-mpc-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpfr-include=$(INSTALL_DIR)/deps/include \
+		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-languages=c,c++ \
 		--enable-libstdcxx-debug-flags='-gdwarf-3 -g -O0 -D_GLIBCXX_ASSERTIONS' \
 		--enable-c99 \
@@ -201,7 +261,7 @@ stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/install-deps stamps/build-newlib
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
 
-stamps/build-gcc-stage2-only: $(GCC_SRCDIR) stamps/install-deps
+stamps/build-gcc-stage2-only: $(GCC_SRCDIR)
 	rm -rf $@ $(notdir $@)
 	mkdir $(notdir $@)
 	cd $(notdir $@) && $</configure \
@@ -212,6 +272,12 @@ stamps/build-gcc-stage2-only: $(GCC_SRCDIR) stamps/install-deps
 		--disable-lib64 \
 		--prefix=$(INSTALL_DIR) \
 		$(CONFIGURE_HOST) \
+		--with-gmp-include=$(INSTALL_DIR)/deps/include \
+		--with-gmp-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpc-include=$(INSTALL_DIR)/deps/include \
+		--with-mpc-lib=$(INSTALL_DIR)/deps/lib \
+		--with-mpfr-include=$(INSTALL_DIR)/deps/include \
+		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-languages=c,c++ \
 		--enable-libstdcxx-debug-flags='-gdwarf-3 -g -O0 -D_GLIBCXX_ASSERTIONS' \
 		--enable-c99 \

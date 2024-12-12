@@ -21,7 +21,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo ./scripts/install-gcc-deps
+          sudo ./scripts/install-apt-dependencies
 
       - name: Build Linux
         run: |
@@ -51,8 +51,10 @@ jobs:
       - name: Package
         run: |
           cd /opt/gcc/linux
+          rm -rf deps
           zip -r9 ../gcc-linux.zip .
           cd /opt/gcc/win32
+          rm -rf deps
           zip -r9 ../gcc-win32.zip .
       
       - name: Upload artifacts
@@ -74,7 +76,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo ./scripts/install-qemu-deps
+          sudo ./scripts/install-apt-dependencies
 
       - name: Build Linux
         run: |

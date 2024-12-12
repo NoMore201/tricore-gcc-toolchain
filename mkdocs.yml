@@ -9,3 +9,4 @@ plugins: []
 nav:
   - Home: index.md
   - Changelog: changelog.md
+  - Debuggin with QEMU: qemu-debug.md
