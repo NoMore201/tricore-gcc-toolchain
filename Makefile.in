@@ -58,7 +58,7 @@ stamps/build-gmp: $(GMP_SRCDIR)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
 
-stamps/build-mpfr: $(MPFR_SRCDIR)
+stamps/build-mpfr: $(MPFR_SRCDIR) stamps/build-gmp
 	rm -rf $@ $(notdir $@)
 	mkdir $(notdir $@)
 	cd $(notdir $@) && $</configure \
@@ -72,7 +72,7 @@ stamps/build-mpfr: $(MPFR_SRCDIR)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
 
-stamps/build-mpc: $(MPC_SRCDIR)
+stamps/build-mpc: $(MPC_SRCDIR) stamps/build-gmp stamps/build-mpfr
 	rm -rf $@ $(notdir $@)
 	mkdir $(notdir $@)
 	cd $(notdir $@) && $</configure \
