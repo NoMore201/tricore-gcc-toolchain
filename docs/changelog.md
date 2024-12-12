@@ -6,7 +6,9 @@
   tricore support enabled
 - script: Switch build script to a GNU autoconf based solution, insipired by
   [RiscV toolchain repository](https://github.com/riscv-collab/riscv-gnu-toolchain)
-- release: Switched from commit SHA based release number to date release number. From now on, all releases will be tagged as 11.3.1-<date> to better recognize different versions
+- release: Switched from commit SHA based release number to date release number.
+  From now on, all releases will be tagged as `11.3.1-<date>` to better recognize
+  different versions
 
 ## 11.3.1-5e4ca74
 

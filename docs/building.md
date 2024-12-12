@@ -14,13 +14,13 @@ work on other Linux distributions and also MSYS2 Windows environment.
 Clone the repository:
 
 ```sh
-git clone --recursive git@github.com:EEESlab/tricore-gcc-toolchain-11.3.0.git
+git clone --recursive https://github.com/NoMore201/tricore-gcc-toolchain
 ```
 
 Install build dependencies:
 
 ```sh
-sudo ./scripts/install-gcc-deps
+sudo ./scripts/install-apt-dependencies
 ```
 
 Create a temporary build directory and call the `configure` script
@@ -52,13 +52,13 @@ You can see an example of a canadian cross build in the
 toolchain repository:
 
 ```sh
-git clone --recursive git@github.com:EEESlab/tricore-gcc-toolchain-11.3.0.git
+git clone --recursive https://github.com/NoMore201/tricore-gcc-toolchain
 ```
 
 Install build dependencies, including MinGW cross-compiler:
 
 ```sh
-sudo ./scripts/install-gcc-deps
+sudo ./scripts/install-apt-dependencies
 ```
 
 First we need to build the linux -> tricore cross-compiler. Refer to the
