@@ -64,8 +64,8 @@ jobs:
           name: tricore-gcc-artifacts
           path: /opt/gcc/*.zip
   
-  build-qemu:
-    name: QEMU build
+  build-qemu-linux:
+    name: QEMU linux build
     runs-on: ubuntu-24.04
 
     steps:
@@ -85,6 +85,32 @@ jobs:
           ../configure --prefix /opt/gcc/linux
           make -j$(nproc) stamps/build-qemu
 
+      - name: Package
+        run: |
+          cd /opt/gcc/linux
+          zip -r9 ../qemu-linux.zip bin/qemu-system-tricore share
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: error
+          name: tricore-qemu-linux-artifacts
+          path: /opt/gcc/*.zip
+  
+  build-qemu-win32:
+    name: QEMU win32 build
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install dependencies
+        run: |
+          sudo ./scripts/install-apt-dependencies
+
       - name: Build Win32
         run: |
           mkdir build-win32
@@ -94,8 +120,6 @@ jobs:
 
       - name: Package
         run: |
-          cd /opt/gcc/linux
-          zip -r9 ../qemu-linux.zip bin/qemu-system-tricore share
           cd /opt/gcc/win32
           zip -r9 ../qemu-win32.zip bin/qemu-system-tricore.exe share
       
@@ -103,5 +127,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: tricore-qemu-artifacts
+          name: tricore-qemu-win32-artifacts
           path: /opt/gcc/*.zip

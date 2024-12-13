@@ -24,15 +24,15 @@ jobs:
         run: |
           mkdir linux-bundle && cd linux-bundle
           unzip ../tricore-gcc-artifacts/gcc-linux.zip
-          unzip ../tricore-qemu-artifacts/qemu-linux.zip
-          zip -r9X tricore-gcc-${{ github.ref_name }}-linux.zip ./*
+          unzip ../tricore-qemu-linux-artifacts/qemu-linux.zip
+          zip -r9 tricore-gcc-${{ github.ref_name }}-linux.zip ./*
 
       - name: Prepare windows package
         run: |
           mkdir win32-bundle && cd win32-bundle
           unzip ../tricore-gcc-artifacts/gcc-win32.zip
-          unzip ../tricore-qemu-artifacts/qemu-win32.zip
-          zip -r9X tricore-gcc-${{ github.ref_name }}-win32.zip ./*
+          unzip ../tricore-qemu-win32-artifacts/qemu-win32.zip
+          zip -r9 tricore-gcc-${{ github.ref_name }}-win32.zip ./*
 
       - name: Push release artifacts
         uses: softprops/action-gh-release@v2
