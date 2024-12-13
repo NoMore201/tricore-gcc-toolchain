@@ -8,6 +8,7 @@ includes the following software:
 - Binutils 2.40
 - libc based on Cygwin Newlib
 - QEMU 9.2.0
+- GDB 14.0 with Tricore support
 
 > This repository is a downstream of
 > [EEESlab/tricore-gcc-toolchain-11.3.0](https://github.com/EEESlab/tricore-gcc-toolchain-11.3.0)

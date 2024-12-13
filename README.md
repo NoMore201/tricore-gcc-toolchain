@@ -4,7 +4,14 @@
 ![ci build status](https://github.com/NoMore201/tricore-gcc-toolchain/actions/workflows/build.yml/badge.svg)
 
 C/C++ toolchain based on GCC 11.3 for AURIX Tricore architecture. It supports
-TriCore architectures 1.3, 1.3.1, 1.6, 1.6.1, 1.6.2 and 1.8.
+TriCore architectures 1.3, 1.3.1, 1.6, 1.6.1, 1.6.2 and 1.8. Currently it
+includes the following software:
+
+- GCC 11.3.1
+- Binutils 2.40
+- libc based on Cygwin Newlib
+- QEMU 9.2.0  with Tricore support
+- GDB 14.0 with Tricore support
 
 Documentation is published through Github Pages in [Docs](https://nomore201.github.io/tricore-gcc-toolchain/)
 

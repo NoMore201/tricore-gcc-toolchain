@@ -94,8 +94,32 @@ make -j$(nproc) stamps/build-gcc-stage2-only
 
 ### Native build
 
-> WIP
+QEMU native build is pretty straightforward. First install dependencies, either
+manually or by running:
 
-### MinGW canadian cross build
+```sh
+sudo ./scripts/install-apt-dependencies
+```
 
-> WIP
+> Note: this will install meson through pip system-wide, since QEMU needs a
+> recent meson version that ubuntu repositories do not have. If you don't want
+> to install system-wide packages through pip, proceed with virtualenv
+
+Once dependencies are installed, proceed with build command:
+
+```sh
+mkdir build-linux && cd build-linux
+../configure --prefix /path/to/linux-prefix
+make -j$(nproc) stamps/build-qemu
+```
+
+### Cross-compile with MinGW
+
+To cross-compile QEMU for Windows, follow the native build instructions, with
+the only difference that you need to specify host target to the configure command:
+
+```sh
+mkdir build-win32 && cd build-win32
+../configure --prefix /path/to/win32-prefix --with-host=x86_64-w64-mingw32
+make -j$(nproc) stamps/build-qemu
+```
