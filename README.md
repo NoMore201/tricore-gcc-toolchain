@@ -2,6 +2,8 @@
 # Tricore GNU compiler toolchain
 
 ![ci build status](https://github.com/NoMore201/tricore-gcc-toolchain/actions/workflows/build.yml/badge.svg)
+[![latest release](https://img.shields.io/github/v/release/NoMore201/tricore-gcc-toolchain)](https://github.com/NoMore201/tricore-gcc-toolchain/releases/latest)
+[![website](https://img.shields.io/badge/-website-26A69A?style=flat)](https://nomore201.github.io/tricore-gcc-toolchain/)
 
 C/C++ toolchain based on GCC 11.3 for AURIX Tricore architecture. It supports
 TriCore architectures 1.3, 1.3.1, 1.6, 1.6.1, 1.6.2 and 1.8. Currently it

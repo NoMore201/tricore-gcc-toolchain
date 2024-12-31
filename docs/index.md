@@ -16,12 +16,18 @@ includes the following software:
 > developement process and automated release management. All the meaningful
 > changes will be contributed back to upstream repository
 
-## Install
+## Download
 
 Grab the latest pre-compiled toolchain from
 [GitHub releases](https://github.com/NoMore201/tricore-gcc-toolchain/releases).
 
-To build the toolchain manually from sources, please refer to the
-[build page](./building.md).
+To build manually from sources, please refer to the [build page](./building.md).
 
+## Code samples
 
+- [AURIX_code_examples](https://github.com/Infineon/AURIX_code_examples):
+collection of code samples from Infineon meant to be used with
+AURIX™ Development Studio
+- [aurix-cmake-code-sample](https://github.com/NoMore201/aurix-cmake-code-sample):
+Project based on Blinky_LED_1_KIT_TC334_LK from Infineon repository
+updated with CMake supports and modern tools (clang-format, clang-tidy)
