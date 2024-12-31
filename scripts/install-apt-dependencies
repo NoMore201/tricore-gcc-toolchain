@@ -13,7 +13,7 @@ apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get -y install \
     build-essential texinfo curl file autoconf automake \
     flex bison zip libdebuginfod-dev \
-    gcc-mingw-w64 g++-mingw-w64 mingw-w64-tools \
+    gcc-mingw-w64 g++-mingw-w64 mingw-w64-tools mingw-w64-x86-64-dev \
     git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-build \
     python3-pip
 
