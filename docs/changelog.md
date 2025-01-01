@@ -1,5 +1,13 @@
 # Changelog
 
+## 11.3.1-20250101
+
+- Enable GDB build in tricore-binutils-gdb
+- Merge GDB patches from go2sh/tricore-binutils-gdb
+- Add material mkdocs docs with github actions trigger
+- Fix LD crash in tricore-binutils-gdb
+- Fix static build of GDB requiring external dependencies
+
 ## 11.3.1-20241211
 
 - toolchain: Added QEMU 9.2.0 static executable to the toolchain, compiled with
