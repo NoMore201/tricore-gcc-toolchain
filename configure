@@ -617,9 +617,9 @@ LIBOBJS
 with_gcc_src
 with_newlib_src
 with_binutils_src
+configure_libstdcxx
 qemu_configure_host
 configure_host
-NEED_GCC_EXTERNAL_LIBRARIES
 BASH
 LEXLIB
 LEX_OUTPUT_ROOT
@@ -676,6 +676,7 @@ ac_subst_files=''
 ac_user_opts='
 enable_option_checking
 with_host
+enable_libstdcxx
 with_binutils_src
 with_newlib_src
 with_gcc_src
@@ -1304,6 +1305,12 @@ if test -n "$ac_init_help"; then
      short | recursive ) echo "Configuration of tricore-toolchain 1.0:";;
    esac
   cat <<\_ACEOF
+
+Optional Features:
+  --disable-option-checking  ignore unrecognized --enable/--with options
+  --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
+  --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --disable-libstdcxx     do not build GCC libstdcxx-v3
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -3543,151 +3550,6 @@ fi
 
 
 
-need_gcc_external_libraries="no"
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for __gmpz_init in -lgmp" >&5
-printf %s "checking for __gmpz_init in -lgmp... " >&6; }
-if test ${ac_cv_lib_gmp___gmpz_init+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lgmp  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-char __gmpz_init ();
-int
-main (void)
-{
-return __gmpz_init ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"
-then :
-  ac_cv_lib_gmp___gmpz_init=yes
-else $as_nop
-  ac_cv_lib_gmp___gmpz_init=no
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_gmp___gmpz_init" >&5
-printf "%s\n" "$ac_cv_lib_gmp___gmpz_init" >&6; }
-if test "x$ac_cv_lib_gmp___gmpz_init" = xyes
-then :
-  printf "%s\n" "#define HAVE_LIBGMP 1" >>confdefs.h
-
-  LIBS="-lgmp $LIBS"
-
-else $as_nop
-  need_gcc_external_libraries="yes"
-fi
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for mpfr_init in -lmpfr" >&5
-printf %s "checking for mpfr_init in -lmpfr... " >&6; }
-if test ${ac_cv_lib_mpfr_mpfr_init+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lmpfr  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-char mpfr_init ();
-int
-main (void)
-{
-return mpfr_init ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"
-then :
-  ac_cv_lib_mpfr_mpfr_init=yes
-else $as_nop
-  ac_cv_lib_mpfr_mpfr_init=no
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_mpfr_mpfr_init" >&5
-printf "%s\n" "$ac_cv_lib_mpfr_mpfr_init" >&6; }
-if test "x$ac_cv_lib_mpfr_mpfr_init" = xyes
-then :
-  printf "%s\n" "#define HAVE_LIBMPFR 1" >>confdefs.h
-
-  LIBS="-lmpfr $LIBS"
-
-else $as_nop
-  need_gcc_external_libraries="yes"
-fi
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for mpc_init2 in -lmpc" >&5
-printf %s "checking for mpc_init2 in -lmpc... " >&6; }
-if test ${ac_cv_lib_mpc_mpc_init2+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lmpc  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-char mpc_init2 ();
-int
-main (void)
-{
-return mpc_init2 ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"
-then :
-  ac_cv_lib_mpc_mpc_init2=yes
-else $as_nop
-  ac_cv_lib_mpc_mpc_init2=no
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_mpc_mpc_init2" >&5
-printf "%s\n" "$ac_cv_lib_mpc_mpc_init2" >&6; }
-if test "x$ac_cv_lib_mpc_mpc_init2" = xyes
-then :
-  printf "%s\n" "#define HAVE_LIBMPC 1" >>confdefs.h
-
-  LIBS="-lmpc $LIBS"
-
-else $as_nop
-  need_gcc_external_libraries="yes"
-fi
-
-if test x"$need_gcc_external_libraries" != xno
-then :
-  NEED_GCC_EXTERNAL_LIBRARIES=true
-
-else $as_nop
-  NEED_GCC_EXTERNAL_LIBRARIES=false
-
-fi
-
 
 # Check whether --with-host was given.
 if test ${with_host+y}
@@ -3713,6 +3575,25 @@ then :
 
 else $as_nop
   qemu_configure_host=""
+
+fi
+
+# Check whether --enable-libstdcxx was given.
+if test ${enable_libstdcxx+y}
+then :
+  enableval=$enable_libstdcxx;
+else $as_nop
+  enable_libstdcxx=yes
+
+fi
+
+
+if test "x$enable_libstdcxx" != xno
+then :
+  configure_libstdcxx="--enable-libstdcxx --enable-libstdcxx-debug-flags='-gdwarf-3 -g -O0 -D_GLIBCXX_ASSERTIONS' --disable-libstdcxx-pch"
+
+else $as_nop
+  configure_libstdcxx=--disable-libstdcxx
 
 fi
 
