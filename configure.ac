@@ -11,17 +11,6 @@ AC_PROG_LEX
 AC_PATH_PROG([BASH], [bash],
 	[AC_MSG_ERROR([bash not found])])
 
-need_gcc_external_libraries="no"
-AC_CHECK_LIB(gmp, __gmpz_init, ,
-        [need_gcc_external_libraries="yes"])
-AC_CHECK_LIB(mpfr, mpfr_init, ,
-        [need_gcc_external_libraries="yes"])
-AC_CHECK_LIB(mpc, mpc_init2, ,
-        [need_gcc_external_libraries="yes"])
-AS_IF([test x"$need_gcc_external_libraries" != xno],
-      [AC_SUBST(NEED_GCC_EXTERNAL_LIBRARIES,true)],
-      [AC_SUBST(NEED_GCC_EXTERNAL_LIBRARIES,false)])
-
 AC_ARG_WITH(host,
 	[AS_HELP_STRING([--with-host=x86_64-w64-mingw32],
 			[Sets the host for the tools, you probably want nothing])],
@@ -35,6 +24,17 @@ AS_IF([test "x$with_host" != xdefault],
 AS_IF([test "x$with_host" != xdefault],
 	[AC_SUBST(qemu_configure_host,--cross-prefix=$with_host-)],
 	[AC_SUBST(qemu_configure_host,"")])
+
+AC_ARG_ENABLE(libstdcxx,
+        [AS_HELP_STRING([--disable-libstdcxx],
+		[do not build GCC libstdcxx-v3])],
+        [],
+        [enable_libstdcxx=yes]
+        )
+
+AS_IF([test "x$enable_libstdcxx" != xno],
+	[AC_SUBST(configure_libstdcxx,"--enable-libstdcxx --enable-libstdcxx-debug-flags='-gdwarf-3 -g -O0 -D_GLIBCXX_ASSERTIONS' --disable-libstdcxx-pch")],
+	[AC_SUBST(configure_libstdcxx,--disable-libstdcxx)])
 
 AC_ARG_WITH(binutils-src,
 	[AS_HELP_STRING([--with-binutils-src],[Set binutils source path, use builtin source by default])],

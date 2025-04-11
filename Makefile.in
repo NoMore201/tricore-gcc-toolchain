@@ -10,6 +10,7 @@ GMP_SRCDIR := $(srcdir)/gmp-6.1.0
 MPFR_SRCDIR := $(srcdir)/mpfr-3.1.6
 MPC_SRCDIR := $(srcdir)/mpc-1.0.3
 
+CONFIGURE_LIBSTDCXX = @configure_libstdcxx@
 CONFIGURE_HOST = @configure_host@
 QEMU_CONFIGURE_HOST = @qemu_configure_host@
 
@@ -169,7 +170,6 @@ stamps/build-gcc-stage1: $(GCC_SRCDIR) stamps/build-binutils-tc stamps/build-gmp
 		--enable-lib32 \
 		--disable-lib64 \
 		--enable-languages=c,c++ \
-		--enable-libstdcxx-debug-flags='-gdwarf-3 -g -O0 -D_GLIBCXX_ASSERTIONS' \
 		--enable-c99 \
 		--enable-long-long \
 		--enable-checking \
@@ -177,6 +177,7 @@ stamps/build-gcc-stage1: $(GCC_SRCDIR) stamps/build-binutils-tc stamps/build-gmp
 		--enable-static \
 		--disable-threads \
 		--disable-shared \
+		$(CONFIGURE_LIBSTDCXX) \
 		--with-headers=yes \
 		--with-newlib=yes \
 		--with-gmp-include=$(INSTALL_DIR)/deps/include \
@@ -186,7 +187,6 @@ stamps/build-gcc-stage1: $(GCC_SRCDIR) stamps/build-binutils-tc stamps/build-gmp
 		--with-mpfr-include=$(INSTALL_DIR)/deps/include \
 		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-mingw-wildcard \
-		--disable-libstdcxx-pch \
 		--enable-newlib-elix-level=3 \
 		--enable-newlib-io-long-long \
 		--disable-newlib-supplied-syscalls \
@@ -239,7 +239,6 @@ stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/build-newlib
 		--with-mpfr-include=$(INSTALL_DIR)/deps/include \
 		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-languages=c,c++ \
-		--enable-libstdcxx-debug-flags='-gdwarf-3 -g -O0 -D_GLIBCXX_ASSERTIONS' \
 		--enable-c99 \
 		--enable-long-long \
 		--enable-checking \
@@ -247,12 +246,12 @@ stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/build-newlib
 		--enable-static \
 		--disable-threads \
 		--disable-shared \
+		$(CONFIGURE_LIBSTDCXX) \
 		--with-headers=yes \
 		--with-gnu-ld \
 		--with-gnu-as \
 		--with-newlib=yes \
 		--enable-mingw-wildcard \
-		--disable-libstdcxx-pch \
 		--enable-newlib-elix-level=3 \
 		--enable-newlib-io-long-long \
 		--disable-newlib-supplied-syscalls \
@@ -280,7 +279,6 @@ stamps/build-gcc-stage2-only: $(GCC_SRCDIR)
 		--with-mpfr-include=$(INSTALL_DIR)/deps/include \
 		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-languages=c,c++ \
-		--enable-libstdcxx-debug-flags='-gdwarf-3 -g -O0 -D_GLIBCXX_ASSERTIONS' \
 		--enable-c99 \
 		--enable-long-long \
 		--enable-checking \
@@ -288,12 +286,12 @@ stamps/build-gcc-stage2-only: $(GCC_SRCDIR)
 		--enable-static \
 		--disable-threads \
 		--disable-shared \
+		$(CONFIGURE_LIBSTDCXX) \
 		--with-headers=yes \
 		--with-gnu-ld \
 		--with-gnu-as \
 		--with-newlib=yes \
 		--enable-mingw-wildcard \
-		--disable-libstdcxx-pch \
 		--enable-newlib-elix-level=3 \
 		--enable-newlib-io-long-long \
 		--disable-newlib-supplied-syscalls \
