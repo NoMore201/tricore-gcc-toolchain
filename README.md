@@ -5,11 +5,11 @@
 [![latest release](https://img.shields.io/github/v/release/NoMore201/tricore-gcc-toolchain)](https://github.com/NoMore201/tricore-gcc-toolchain/releases/latest)
 [![website](https://img.shields.io/badge/-website-26A69A?style=flat)](https://nomore201.github.io/tricore-gcc-toolchain/)
 
-C/C++ toolchain based on GCC 11.3 for AURIX Tricore architecture. It supports
+C/C++ toolchain based on GCC 13.3 for AURIX Tricore architecture. It supports
 TriCore architectures 1.3, 1.3.1, 1.6, 1.6.1, 1.6.2 and 1.8. Currently it
 includes the following software:
 
-- GCC 11.3.1
+- GCC 13.3
 - Binutils 2.40
 - libc based on Cygwin Newlib
 - QEMU 9.2.0  with Tricore support

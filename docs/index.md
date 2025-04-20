@@ -4,7 +4,7 @@ Free and open source cross-compiler toolchain for AURIX™ TriCore™
 microcontrollers. It supports TriCore™ architecture from 1.3 up to 1.8 and
 includes the following software:
 
-- GCC 11.3.1
+- GCC 13.3
 - Binutils 2.40
 - libc based on Cygwin Newlib
 - QEMU 9.2.0
