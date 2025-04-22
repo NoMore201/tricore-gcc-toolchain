@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e
+
+pacman -Sy --noconfirm --needed \
+    base-devel flex bison make \
+    mingw-w64-ucrt-x86_64-toolchain \
+    mingw-w64-ucrt-x86_64-meson \
+
+# Download older GCC version
+curl -LO https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gcc-libs-13.2.0-6-any.pkg.tar.zst
+curl -LO https://repo.msys2.org/mingw/ucrt64/mingw-w64-ucrt-x86_64-gcc-13.2.0-6-any.pkg.tar.zst
+
+pacman -U --noconfirm \
+    mingw-w64-ucrt-x86_64-gcc-13.2.0-6-any.pkg.tar.zst \
+    mingw-w64-ucrt-x86_64-gcc-libs-13.2.0-6-any.pkg.tar.zst

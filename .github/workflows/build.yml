@@ -29,6 +29,7 @@ jobs:
           cd build-linux
           ../configure --prefix /opt/gcc/linux
           make -j$(nproc) stamps/build-gcc-stage2
+          make -j$(nproc) stamps/build-gdb
 
       - name: Build Win32
         run: |
@@ -46,7 +47,7 @@ jobs:
         run: |
           cd /opt/gcc/linux
           rm -rf deps
-          tar -czf ../gcc-linux.tar.gz .
+          zip -r9 ../gcc-linux.zip .
           cd /opt/gcc/win32
           rm -rf deps
           zip -r9 ../gcc-win32.zip .
@@ -56,9 +57,7 @@ jobs:
         with:
           if-no-files-found: error
           name: tricore-gcc-artifacts
-          path: |
-            /opt/gcc/*.zip
-            /opt/gcc/*.tar.gz
+          path: /opt/gcc/*.zip
   
   build-qemu-linux:
     name: QEMU linux build
@@ -84,14 +83,14 @@ jobs:
       - name: Package
         run: |
           cd /opt/gcc/linux
-          tar -czf ../qemu-linux.tar.gz bin/qemu-system-tricore share
+          zip -r9 ../qemu-linux.zip bin/qemu-system-tricore share
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: tricore-qemu-linux-artifacts
-          path: /opt/gcc/*.tar.gz
+          path: /opt/gcc/*.zip
   
   build-qemu-win32:
     name: QEMU win32 build
