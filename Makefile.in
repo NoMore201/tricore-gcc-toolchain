@@ -54,7 +54,10 @@ stamps/build-gmp: $(GMP_SRCDIR)
 		$(CONFIGURE_HOST) \
 		--disable-assembly \
 		--enable-static \
-		--disable-shared
+		--disable-shared \
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
+		LDFLAGS="-s"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -68,7 +71,10 @@ stamps/build-mpfr: $(MPFR_SRCDIR) stamps/build-gmp
 		--with-gmp-include=$(INSTALL_DIR)/deps/include \
 		--with-gmp-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-static \
-		--disable-shared
+		--disable-shared \
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
+		LDFLAGS="-s"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -84,7 +90,10 @@ stamps/build-mpc: $(MPC_SRCDIR) stamps/build-mpfr
 		--with-mpfr-include=$(INSTALL_DIR)/deps/include \
 		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-static \
-		--disable-shared
+		--disable-shared \
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
+		LDFLAGS="-s"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -97,6 +106,8 @@ stamps/build-binutils-mcs: $(BINUTILS_SRCDIR) stamps/build-mpc
 		--program-prefix=mcs-elf- \
 		--prefix=$(INSTALL_DIR) \
 		$(CONFIGURE_HOST) \
+		--enable-static \
+		--disable-shared \
 		--disable-threads \
 		--enable-nls \
 		--disable-itcl \
@@ -115,7 +126,10 @@ stamps/build-binutils-mcs: $(BINUTILS_SRCDIR) stamps/build-mpc
 		--enable-checking=release \
 		--with-gnu-ld \
 		--with-gnu-as \
-		--disable-werror
+		--disable-werror \
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
+		LDFLAGS="-s"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -147,14 +161,17 @@ stamps/build-binutils-tc: $(BINUTILS_SRCDIR) stamps/build-binutils-mcs
 		--disable-rda \
 		--disable-sid \
 		--disable-sim \
-		--enable-gdb \
+		--disable-gdb \
 		--disable-newlib \
 		--disable-libgloss \
 		--disable-test-suite \
 		--enable-checking=release \
 		--with-gnu-ld \
 		--with-gnu-as \
-		--disable-werror
+		--disable-werror \
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
+		LDFLAGS="-s"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -163,8 +180,6 @@ stamps/build-gcc-stage1: $(GCC_SRCDIR) stamps/build-binutils-tc stamps/build-gmp
 	rm -rf $@ $(notdir $@)
 	mkdir $(notdir $@)
 	cd $(notdir $@) && $</configure \
-		CFLAGS_FOR_TARGET='-g -O2 -gdwarf-3' \
-		CXXFLAGS_FOR_TARGET='-g -O2 -gdwarf-3' \
 		--target=tricore-elf \
 		--prefix=$(INSTALL_DIR) \
 		--enable-lib32 \
@@ -191,7 +206,12 @@ stamps/build-gcc-stage1: $(GCC_SRCDIR) stamps/build-binutils-tc stamps/build-gmp
 		--enable-newlib-io-long-long \
 		--disable-newlib-supplied-syscalls \
 		--disable-libssp \
-		--disable-test-suite
+		--disable-test-suite \
+		CFLAGS_FOR_TARGET='-g -O2 -gdwarf-3' \
+		CXXFLAGS_FOR_TARGET='-g -O2 -gdwarf-3' \
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
+		LDFLAGS="-s"
 	$(MAKE) -C $(notdir $@) all-gcc
 	$(MAKE) -C $(notdir $@) install-gcc
 	mkdir -p $(dir $@) && touch $@
@@ -225,8 +245,6 @@ stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/build-newlib
 	rm -rf $@ $(notdir $@)
 	mkdir $(notdir $@)
 	cd $(notdir $@) && PATH=$(INSTALL_DIR)/bin:$$PATH $</configure \
-		CFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
-		CPPFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
 		--target=tricore-elf \
 		--enable-lib32 \
 		--disable-lib64 \
@@ -256,7 +274,12 @@ stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/build-newlib
 		--enable-newlib-io-long-long \
 		--disable-newlib-supplied-syscalls \
 		--disable-libssp \
-		--disable-test-suite
+		--disable-test-suite \
+		CFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
+		CXXFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
+		LDFLAGS="-s"
 	$(MAKE) -C $(notdir $@) all
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -265,8 +288,6 @@ stamps/build-gcc-stage2-only: $(GCC_SRCDIR)
 	rm -rf $@ $(notdir $@)
 	mkdir $(notdir $@)
 	cd $(notdir $@) && $</configure \
-		CFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
-		CPPFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
 		--target=tricore-elf \
 		--enable-lib32 \
 		--disable-lib64 \
@@ -296,7 +317,12 @@ stamps/build-gcc-stage2-only: $(GCC_SRCDIR)
 		--enable-newlib-io-long-long \
 		--disable-newlib-supplied-syscalls \
 		--disable-libssp \
-		--disable-test-suite
+		--disable-test-suite \
+		CFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
+		CXXFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
+		LDFLAGS="-s"
 	$(MAKE) -C $(notdir $@) all
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -313,7 +339,10 @@ stamps/build-qemu: $(QEMU_SRCDIR)
 		--datadir=share/qemu \
 		--localedir=share/locale \
 		--static \
-		--without-default-features
+		--without-default-features \
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
+		LDFLAGS="-s"
 	$(MAKE) -C $(notdir $@) all
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@

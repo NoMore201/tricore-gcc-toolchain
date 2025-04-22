@@ -27,9 +27,6 @@ jobs:
         run: |
           mkdir build-linux
           cd build-linux
-          export CFLAGS="-O2"
-          export CXXFLAGS="-O2"
-          export LDFLAGS="-static -s"
           ../configure --prefix /opt/gcc/linux
           make -j$(nproc) stamps/build-gcc-stage2
 
@@ -40,9 +37,6 @@ jobs:
           cd ../..
           mkdir build-win32
           cd build-win32
-          export CFLAGS="-O2"
-          export CXXFLAGS="-O2"
-          export LDFLAGS="-static -s"
           ../configure --prefix /opt/gcc/win32 --with-host=x86_64-w64-mingw32
           make -j$(nproc) stamps/build-binutils-tc
           export PATH="/opt/gcc/linux/bin:$PATH"
@@ -52,7 +46,7 @@ jobs:
         run: |
           cd /opt/gcc/linux
           rm -rf deps
-          zip -r9 ../gcc-linux.zip .
+          tar -czf ../gcc-linux.tar.gz .
           cd /opt/gcc/win32
           rm -rf deps
           zip -r9 ../gcc-win32.zip .
@@ -62,7 +56,9 @@ jobs:
         with:
           if-no-files-found: error
           name: tricore-gcc-artifacts
-          path: /opt/gcc/*.zip
+          path: |
+            /opt/gcc/*.zip
+            /opt/gcc/*.tar.gz
   
   build-qemu-linux:
     name: QEMU linux build
@@ -88,14 +84,14 @@ jobs:
       - name: Package
         run: |
           cd /opt/gcc/linux
-          zip -r9 ../qemu-linux.zip bin/qemu-system-tricore share
+          tar -czf ../qemu-linux.tar.gz bin/qemu-system-tricore share
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: tricore-qemu-linux-artifacts
-          path: /opt/gcc/*.zip
+          path: /opt/gcc/*.tar.gz
   
   build-qemu-win32:
     name: QEMU win32 build
