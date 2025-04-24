@@ -1,0 +1,31 @@
+---
+os:
+  name: 'OpenSUSE'
+  version: 'Leap15'
+  libosinfo_id: 'http://opensuse.org/opensuse/15.6'
+
+packaging:
+  format: 'rpm'
+  command: 'zypper'
+  repos:
+    - https://download.opensuse.org/update/leap/15.6/backports/openSUSE:Backports:SLE-15-SP6:Update.repo
+
+paths:
+  bash: /bin/bash
+  cc: /usr/bin/gcc
+  ccache: /usr/bin/ccache
+  make: /usr/bin/make
+  ninja: /usr/bin/ninja
+  pip3: /usr/bin/pip3
+  python: /usr/bin/python3
+  sudoers: /etc/sudoers
+
+ansible_python_package: python3
+ansible_python_interpreter: /usr/bin/python3
+
+install:
+  unattended_scheme: autoyast
+  url: http://download.opensuse.org/distribution/leap/15.6/repo/oss/
+
+containers:
+  base: registry.opensuse.org/opensuse/leap:15.6
