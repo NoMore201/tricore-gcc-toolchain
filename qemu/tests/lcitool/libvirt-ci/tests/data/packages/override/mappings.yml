@@ -1,0 +1,10 @@
+mappings:
+  meson:
+    CentOSStream9:
+
+  python3:
+    CentOSStream9: python38
+
+pypi_mappings:
+  meson:
+    default: meson==0.63.2
