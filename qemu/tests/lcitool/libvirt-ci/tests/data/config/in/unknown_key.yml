@@ -1,4 +1,0 @@
-install:
-  root_password: foo
-  foo: bar
-  bar: baz

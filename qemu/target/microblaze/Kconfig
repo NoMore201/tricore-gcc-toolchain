@@ -1,3 +1,0 @@
-config MICROBLAZE
-    bool
-    select DEVICE_TREE # needed by boot.c

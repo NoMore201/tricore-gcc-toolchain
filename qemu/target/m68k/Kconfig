@@ -1,3 +1,0 @@
-config M68K
-    bool
-    imply SEMIHOSTING if TCG

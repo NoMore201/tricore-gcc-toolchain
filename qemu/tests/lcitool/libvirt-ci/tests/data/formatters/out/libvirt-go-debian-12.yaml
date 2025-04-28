@@ -1,9 +1,0 @@
-packages:
-  - ca-certificates
-  - ccache
-  - gcc
-  - git
-  - golang
-  - libc6-dev
-  - locales
-  - pkgconf

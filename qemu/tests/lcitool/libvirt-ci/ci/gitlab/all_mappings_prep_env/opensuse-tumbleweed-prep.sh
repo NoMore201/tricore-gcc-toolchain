@@ -1,1 +1,0 @@
-opensuse-prep.sh

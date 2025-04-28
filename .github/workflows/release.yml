@@ -25,6 +25,7 @@ jobs:
           mkdir linux-bundle && cd linux-bundle
           tar xf ../tricore-gcc-artifacts/gcc-linux.tar.gz
           tar xf ../tricore-qemu-linux-artifacts/qemu-linux.tar.gz
+          tar xf ../tricore-gdb-linux-artifacts/gdb-linux.tar.gz
           tar -czf tricore-gcc-${{ github.ref_name }}-linux.tar.gz ./*
 
       - name: Prepare windows package
@@ -32,6 +33,7 @@ jobs:
           mkdir win32-bundle && cd win32-bundle
           unzip ../tricore-gcc-artifacts/gcc-win32.zip
           unzip ../tricore-qemu-win32-artifacts/qemu-win32.zip
+          unzip ../tricore-gdb-win32-artifacts/gdb-win32.zip
           zip -r9 tricore-gcc-${{ github.ref_name }}-win32.zip ./*
 
       - name: Push release artifacts

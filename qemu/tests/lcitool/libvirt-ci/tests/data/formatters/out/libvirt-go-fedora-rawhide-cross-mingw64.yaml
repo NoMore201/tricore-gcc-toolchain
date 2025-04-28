@@ -1,9 +1,0 @@
-packages:
-  - ca-certificates
-  - ccache
-  - git
-  - glibc-langpack-en
-  - golang
-  - mingw64-gcc
-  - mingw64-headers
-  - mingw64-pkg-config
