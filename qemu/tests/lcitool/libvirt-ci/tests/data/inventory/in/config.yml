@@ -1,3 +1,0 @@
-install:
-  cloud_init: true
-  root_password: foo

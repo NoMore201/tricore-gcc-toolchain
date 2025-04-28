@@ -1,3 +1,0 @@
-HEADER: sbi/sbi_unit_test.h
-TYPE: struct sbiunit_test_suite
-NAME: sbi_unit_tests

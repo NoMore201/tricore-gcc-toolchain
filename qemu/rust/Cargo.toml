@@ -1,7 +1,0 @@
-[workspace]
-resolver = "2"
-members = [
-    "qemu-api-macros",
-    "qemu-api",
-    "hw/char/pl011",
-]

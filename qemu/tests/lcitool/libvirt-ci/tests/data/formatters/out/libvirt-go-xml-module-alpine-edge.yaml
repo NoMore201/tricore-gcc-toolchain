@@ -1,4 +1,0 @@
-packages:
-  - ca-certificates
-  - git
-  - go

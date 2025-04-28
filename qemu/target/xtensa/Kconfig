@@ -1,3 +1,0 @@
-config XTENSA
-    bool
-    imply SEMIHOSTING if TCG
