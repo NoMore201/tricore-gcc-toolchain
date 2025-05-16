@@ -32,5 +32,5 @@ plugins:
 nav:
   - Home: index.md
   - Build: building.md
-  - Debuggin with QEMU: qemu-debug.md
+  - Debug with QEMU+GDB: qemu-debug.md
   - Changelog: changelog.md

@@ -1,4 +1,4 @@
-# Debugging with QEMU
+# Debug you software using QEMU + GDB
 
 This toolchain provides `qemu-system-tricore` and `tricore-elf-gdb` for running
 and debugging your code in a simulated environment.
@@ -6,6 +6,8 @@ and debugging your code in a simulated environment.
 > QEMU support for Tricore architecture is incomplete. It provides only basic
 > CPU instruction decode (no interrupts or multi-core) and no peripheral is
 > available. Only core architecture from tc1.3 up to tc1.6.2 is supported
+
+## Setup
 
 The code below uses ELF executable built from
 [aurix-cmake-code-sample](https://github.com/NoMore201/aurix-cmake-code-sample)
@@ -56,3 +58,55 @@ Ifx_Ssw_jumpToFunction (fun=<optimized out>)
 Now you can start debugging your code through QEMU.
 
 ![gdb example](./gdb-screen.png)
+
+## Debugging through VSCode
+
+When using VScode with C/C++ extension is it possible to directly run GDB from
+the code editor and debug throught the GUI.
+
+All you need to do is provide a custom `launch.json` configuration, making sure
+to adjust `program` and `miDebuggerPath` according to your environment.
+
+When using VS Code with the C/C++ extension, you can directly run GDB from the
+code editor and debug through the GUI. Simply provide a custom `launch.json`
+configuration, ensuring you adjust `program` and `miDebuggerPath` settings
+to match your environment.
+
+```json
+{
+    // make sure QEMU is running your executable with gdbstub enabled before
+    // launching this
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "tricore-qemu-debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/out/debug/src/aurix_sample_tc33x.elf",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/opt/tricore/bin/tricore-elf-gdb",
+            "miDebuggerServerAddress": "localhost:1234",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set architecture TriCore:V1_6_2",
+                    "ignoreFailures": false
+                }
+            ]
+        }
+
+    ]
+}
+```
+
+![vscode debugging session](./vscode-debug-example.png)
