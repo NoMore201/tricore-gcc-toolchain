@@ -120,7 +120,10 @@ stamps/build-gmp: $(GMP_SRCDIR)
 		$(CONFIGURE_HOST) \
 		--disable-assembly \
 		--enable-static \
-		--disable-shared
+		--disable-shared \
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
+		LDFLAGS="-s"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -133,7 +136,10 @@ stamps/build-isl: $(ISL_SRCDIR) stamps/build-gmp
 		$(CONFIGURE_HOST) \
 		--enable-static \
 		--disable-shared \
-		--with-gmp-prefix=$(INSTALL_DIR)/deps
+		--with-gmp-prefix=$(INSTALL_DIR)/deps \
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
+		LDFLAGS="-s"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -147,7 +153,10 @@ stamps/build-mpfr: $(MPFR_SRCDIR) stamps/build-isl
 		--with-gmp-include=$(INSTALL_DIR)/deps/include \
 		--with-gmp-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-static \
-		--disable-shared
+		--disable-shared \
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
+		LDFLAGS="-s"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -163,7 +172,10 @@ stamps/build-mpc: $(MPC_SRCDIR) stamps/build-mpfr
 		--with-mpfr-include=$(INSTALL_DIR)/deps/include \
 		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-static \
-		--disable-shared
+		--disable-shared \
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
+		LDFLAGS="-s"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -325,7 +337,7 @@ stamps/build-newlib: $(NEWLIB_SRCDIR) stamps/build-gcc-stage1
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
 
-stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/build-newlib stamps/build-gmp
+stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/build-newlib
 	rm -rf $@ $(notdir $@)
 	mkdir $(notdir $@)
 	cd $(notdir $@) && PATH=$(INSTALL_DIR)/bin:$$PATH $</configure \
