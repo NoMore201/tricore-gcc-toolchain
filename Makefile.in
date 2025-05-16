@@ -543,6 +543,7 @@ stamps/build-gdb: $(BINUTILS_SRCDIR) stamps/build-mpc stamps/build-iconv
 		--disable-tui \
 		--without-guile \
 		--without-debuginfod \
+		--without-python \
 		--with-gnu-ld \
 		--with-gnu-as \
 		--disable-unit-tests \
