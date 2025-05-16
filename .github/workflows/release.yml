@@ -40,5 +40,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            linux-bundle/*.zip
+            linux-bundle/*.tar.gz
             win32-bundle/*.zip
