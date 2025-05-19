@@ -617,6 +617,7 @@ LIBOBJS
 with_gcc_src
 with_newlib_src
 with_binutils_src
+configure_debug
 configure_libstdcxx
 qemu_configure_host
 configure_host
@@ -677,6 +678,7 @@ ac_user_opts='
 enable_option_checking
 with_host
 enable_libstdcxx
+enable_debug
 with_binutils_src
 with_newlib_src
 with_gcc_src
@@ -1311,6 +1313,8 @@ Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --disable-libstdcxx     do not build GCC libstdcxx-v3
+  --enable-debug          build toolchain with debug symbols and avoid
+                          stripping final executables
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -3594,6 +3598,25 @@ then :
 
 else $as_nop
   configure_libstdcxx=--disable-libstdcxx
+
+fi
+
+# Check whether --enable-debug was given.
+if test ${enable_debug+y}
+then :
+  enableval=$enable_debug;
+else $as_nop
+  enable_debug=yes
+
+fi
+
+
+if test "x$enable_debug" != xno
+then :
+  configure_debug="-g"
+
+else $as_nop
+  configure_debug=""
 
 fi
 

@@ -8,6 +8,7 @@ GCC_SRCDIR := @with_gcc_src@
 
 CONFIGURE_LIBSTDCXX = @configure_libstdcxx@
 CONFIGURE_HOST = @configure_host@
+CONFIGURE_DEBUG = @configure_debug@
 QEMU_CONFIGURE_HOST = @qemu_configure_host@
 
 QEMU_VERSION := 9.2.3
@@ -62,6 +63,17 @@ else
 	QEMU_ENV_VARS :=
 endif
 
+CFLAGS := -O2 $(CONFIGURE_DEBUG)
+CXXFLAGS := -O2 $(CONFIGURE_DEBUG)
+
+ifeq ($(CONFIGURE_DEBUG),-g)
+	QEMU_CONFIGURE_DEBUG := --enable-debug-info
+	LDFLAGS :=
+else
+	QEMU_CONFIGURE_DEBUG := --disable-debug-info
+	LDFLAGS := -s
+endif
+
 all: stamps/build-qemu stamps/build-gcc-stage2
 
 clean-binutils-tc:
@@ -112,6 +124,24 @@ $(ISL_PACKAGE):
 $(ISL_SRCDIR): $(ISL_PACKAGE)
 	tar xf $<
 
+$(QEMU_PACKAGE):
+	curl --http1.1 -L -o $@ $(QEMU_DOWNLOAD_URL)
+
+$(QEMU_SRCDIR): $(QEMU_PACKAGE)
+	tar xf $<
+
+$(NCURSES_PACKAGE):
+	curl --http1.1 -L -o $@ $(NCURSES_DOWNLOAD_URL)
+
+$(NCURSES_SRCDIR): $(NCURSES_PACKAGE)
+	tar xf $<
+
+$(ICONV_PACKAGE):
+	curl --http1.1 -L -o $@ $(ICONV_DOWNLOAD_URL)
+
+$(ICONV_SRCDIR): $(ICONV_PACKAGE)
+	tar xf $<
+
 stamps/build-gmp: $(GMP_SRCDIR)
 	rm -rf $@ $(notdir $@)
 	mkdir $(notdir $@)
@@ -121,9 +151,9 @@ stamps/build-gmp: $(GMP_SRCDIR)
 		--disable-assembly \
 		--enable-static \
 		--disable-shared \
-		CFLAGS="-O2" \
-		CXXFLAGS="-O2" \
-		LDFLAGS="-s"
+		CFLAGS="$(CFLAGS)" \
+		CXXFLAGS="$(CXXFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -137,9 +167,9 @@ stamps/build-isl: $(ISL_SRCDIR) stamps/build-gmp
 		--enable-static \
 		--disable-shared \
 		--with-gmp-prefix=$(INSTALL_DIR)/deps \
-		CFLAGS="-O2" \
-		CXXFLAGS="-O2" \
-		LDFLAGS="-s"
+		CFLAGS="$(CFLAGS)" \
+		CXXFLAGS="$(CXXFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -154,9 +184,9 @@ stamps/build-mpfr: $(MPFR_SRCDIR) stamps/build-isl
 		--with-gmp-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-static \
 		--disable-shared \
-		CFLAGS="-O2" \
-		CXXFLAGS="-O2" \
-		LDFLAGS="-s"
+		CFLAGS="$(CFLAGS)" \
+		CXXFLAGS="$(CXXFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -173,9 +203,9 @@ stamps/build-mpc: $(MPC_SRCDIR) stamps/build-mpfr
 		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--enable-static \
 		--disable-shared \
-		CFLAGS="-O2" \
-		CXXFLAGS="-O2" \
-		LDFLAGS="-s"
+		CFLAGS="$(CFLAGS)" \
+		CXXFLAGS="$(CXXFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -217,9 +247,9 @@ stamps/build-binutils-mcs: $(BINUTILS_SRCDIR) stamps/build-mpc
 		--with-gnu-ld \
 		--with-gnu-as \
 		--disable-werror \
-		CFLAGS="-O2" \
-		CXXFLAGS="-O2" \
-		LDFLAGS="-s"
+		CFLAGS="$(CFLAGS)" \
+		CXXFLAGS="$(CXXFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	$(MAKE) -C $(notdir $@) MAKEINFO=true
 	$(MAKE) -C $(notdir $@) MAKEINFO=true install
 	mkdir -p $(dir $@) && touch $@
@@ -263,9 +293,9 @@ stamps/build-binutils-tc: $(BINUTILS_SRCDIR) stamps/build-binutils-mcs
 		--with-gnu-ld \
 		--with-gnu-as \
 		--disable-werror \
-		CFLAGS="-O2" \
-		CXXFLAGS="-O2" \
-		LDFLAGS="-s"
+		CFLAGS="$(CFLAGS)" \
+		CXXFLAGS="$(CXXFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	$(MAKE) -C $(notdir $@) MAKEINFO=true
 	$(MAKE) -C $(notdir $@) MAKEINFO=true install
 	mkdir -p $(dir $@) && touch $@
@@ -305,9 +335,9 @@ stamps/build-gcc-stage1: $(GCC_SRCDIR) stamps/build-binutils-tc
 		--disable-test-suite \
 		CFLAGS_FOR_TARGET='-g -O2 -gdwarf-3' \
 		CXXFLAGS_FOR_TARGET='-g -O2 -gdwarf-3' \
-		CFLAGS="-O2" \
-		CXXFLAGS="-O2" \
-		LDFLAGS="-s"
+		CFLAGS="$(CFLAGS)" \
+		CXXFLAGS="$(CXXFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	$(MAKE) -C $(notdir $@) all-gcc
 	$(MAKE) -C $(notdir $@) install-gcc
 	mkdir -p $(dir $@) && touch $@
@@ -375,9 +405,9 @@ stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/build-newlib
 		--disable-test-suite \
 		CFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
 		CXXFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
-		CFLAGS="-O2" \
-		CXXFLAGS="-O2" \
-		LDFLAGS="-s"
+		CFLAGS="$(CFLAGS)" \
+		CXXFLAGS="$(CXXFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	$(MAKE) -C $(notdir $@) all
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -420,18 +450,12 @@ stamps/build-gcc-stage2-only: $(GCC_SRCDIR) stamps/build-mpc
 		--disable-test-suite \
 		CFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
 		CXXFLAGS_FOR_TARGET='-g -gdwarf-3 -O2 -ffast-math -ffunction-sections -mfast-div -fno-common -mno-eabi-bitfield-limit' \
-		CFLAGS="-O2" \
-		CXXFLAGS="-O2" \
-		LDFLAGS="-s"
+		CFLAGS="$(CFLAGS)" \
+		CXXFLAGS="$(CXXFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	$(MAKE) -C $(notdir $@) all
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
-
-$(QEMU_SRCDIR): $(QEMU_PACKAGE)
-	tar xf $<
-
-$(QEMU_PACKAGE):
-	curl --http1.1 -L -o $@ $(QEMU_DOWNLOAD_URL)
 
 stamps/build-qemu: $(QEMU_SRCDIR)
 	rm -rf $@ $(notdir $@)
@@ -440,25 +464,18 @@ stamps/build-qemu: $(QEMU_SRCDIR)
 	cd $(notdir $@) && $(QEMU_ENV_VARS) $</configure \
 		--prefix=$(INSTALL_DIR) \
 		$(QEMU_CONFIGURE_HOST) \
+		$(QEMU_CONFIGURE_DEBUG) \
 		--target-list=tricore-softmmu \
 		--bindir=bin \
 		--datadir=share/qemu \
 		--localedir=share/locale \
 		--static \
 		--without-default-features \
-		CFLAGS="-O2" \
-		CXXFLAGS="-O2" \
-		LDFLAGS="-s"
+		LDFLAGS="$(LDFLAGS)"
 	$(MAKE) -C $(notdir $@) all
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
 
-
-$(NCURSES_PACKAGE):
-	curl --http1.1 -L -o $@ $(NCURSES_DOWNLOAD_URL)
-
-$(NCURSES_SRCDIR): $(NCURSES_PACKAGE)
-	tar xf $<
 
 stamps/build-ncurses: $(NCURSES_SRCDIR)
 	rm -rf $@ $(notdir $@)
@@ -478,18 +495,12 @@ stamps/build-ncurses: $(NCURSES_SRCDIR)
 		--without-manpages \
 		--without-progs \
 		--without-tests \
-		CFLAGS="-O2" \
-		CXXFLAGS="-O2" \
-		LDFLAGS="-s"
+		CFLAGS="$(CFLAGS)" \
+		CXXFLAGS="$(CXXFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
-
-$(ICONV_PACKAGE):
-	curl --http1.1 -L -o $@ $(ICONV_DOWNLOAD_URL)
-
-$(ICONV_SRCDIR): $(ICONV_PACKAGE)
-	tar xf $<
 
 stamps/build-iconv: $(ICONV_SRCDIR)
 	rm -rf $@ $(notdir $@)
@@ -499,9 +510,9 @@ stamps/build-iconv: $(ICONV_SRCDIR)
 		$(CONFIGURE_HOST) \
 		--enable-static \
 		--disable-shared \
-		CFLAGS="-O2" \
-		CXXFLAGS="-O2" \
-		LDFLAGS="-s"
+		CFLAGS="$(CFLAGS)" \
+		CXXFLAGS="$(CXXFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	mkdir -p $(dir $@) && touch $@
@@ -547,9 +558,9 @@ stamps/build-gdb: $(BINUTILS_SRCDIR) stamps/build-mpc stamps/build-iconv
 		--with-gnu-ld \
 		--with-gnu-as \
 		--disable-unit-tests \
-		CFLAGS="-O2" \
-		CXXFLAGS="-O2" \
-		LDFLAGS="-s -L$(INSTALL_DIR)/deps/lib"
+		CFLAGS="$(CFLAGS)" \
+		CXXFLAGS="$(CXXFLAGS)" \
+		LDFLAGS="$(LDFLAGS) -L$(INSTALL_DIR)/deps/lib"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) prefix=$(INSTALL_DIR) install
 	mkdir -p $(dir $@) && touch $@
