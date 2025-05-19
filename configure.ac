@@ -36,6 +36,17 @@ AS_IF([test "x$enable_libstdcxx" != xno],
 	[AC_SUBST(configure_libstdcxx,"--enable-libstdcxx --enable-libstdcxx-debug-flags='-gdwarf-3 -g -O0 -D_GLIBCXX_ASSERTIONS' --disable-libstdcxx-pch")],
 	[AC_SUBST(configure_libstdcxx,--disable-libstdcxx)])
 
+AC_ARG_ENABLE(debug,
+        [AS_HELP_STRING([--enable-debug],
+		[build toolchain with debug symbols and avoid stripping final executables])],
+        [],
+        [enable_debug=yes]
+        )
+
+AS_IF([test "x$enable_debug" != xno],
+	[AC_SUBST(configure_debug,"-g")],
+	[AC_SUBST(configure_debug,"")])
+
 AC_ARG_WITH(binutils-src,
 	[AS_HELP_STRING([--with-binutils-src],[Set binutils source path, use builtin source by default])],
 	[],

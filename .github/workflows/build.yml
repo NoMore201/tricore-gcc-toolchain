@@ -27,7 +27,7 @@ jobs:
         run: |
           mkdir build-linux
           cd build-linux
-          ../configure --prefix /opt/gcc/linux
+          ../configure --disable-debug --prefix /opt/gcc/linux
           make -j$(nproc) stamps/build-gcc-stage2
 
       - name: Build Win32
@@ -37,7 +37,7 @@ jobs:
           cd ../..
           mkdir build-win32
           cd build-win32
-          ../configure --prefix /opt/gcc/win32 --with-host=x86_64-w64-mingw32
+          ../configure --disable-debug --prefix /opt/gcc/win32 --with-host=x86_64-w64-mingw32
           make -j$(nproc) stamps/build-binutils-tc
           export PATH="/opt/gcc/linux/bin:$PATH"
           make -j$(nproc) stamps/build-gcc-stage2-only
@@ -78,7 +78,7 @@ jobs:
         run: |
           mkdir build-linux
           cd build-linux
-          ../configure --prefix /opt/gcc/linux
+          ../configure --disable-debug --prefix /opt/gcc/linux
           make -j$(nproc) stamps/build-qemu
 
       - name: Package
@@ -111,7 +111,7 @@ jobs:
         run: |
           mkdir build-win32
           cd build-win32
-          ../configure --prefix /opt/gcc/win32 --with-host=x86_64-w64-mingw32
+          ../configure --disable-debug --prefix /opt/gcc/win32 --with-host=x86_64-w64-mingw32
           make -j$(nproc) stamps/build-qemu
 
       - name: Package
@@ -144,7 +144,7 @@ jobs:
         run: |
           mkdir build-linux
           cd build-linux
-          ../configure --prefix /opt/gcc/linux
+          ../configure --disable-debug --prefix /opt/gcc/linux
           make -j$(nproc) stamps/build-gdb
 
       - name: Package
@@ -178,7 +178,7 @@ jobs:
         run: |
           mkdir build-win32
           cd build-win32
-          ../configure --prefix /opt/gcc/win32 --with-host=x86_64-w64-mingw32
+          ../configure --disable-debug --prefix /opt/gcc/win32 --with-host=x86_64-w64-mingw32
           make -j$(nproc) stamps/build-gdb
 
       - name: Package
