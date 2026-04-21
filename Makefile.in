@@ -152,6 +152,8 @@ stamps/build-gmp: $(GMP_SRCDIR)
 		--enable-static \
 		--disable-shared \
 		CFLAGS="$(CFLAGS)" \
+		CC_FOR_BUILD=gcc \
+		CPP_FOR_BUILD='gcc -E' \
 		CXXFLAGS="$(CXXFLAGS)" \
 		LDFLAGS="$(LDFLAGS)"
 	$(MAKE) -C $(notdir $@)
