@@ -316,6 +316,7 @@ stamps/build-gcc-stage1: $(GCC_SRCDIR) stamps/build-binutils-tc
 		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--with-isl-include=$(INSTALL_DIR)/deps/include \
 		--with-isl-lib=$(INSTALL_DIR)/deps/lib \
+		--with-pkgversion=tricore-gcc-toolchain \
 		--enable-lib32 \
 		--disable-lib64 \
 		--enable-languages=c,c++ \
@@ -386,6 +387,7 @@ stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/build-newlib
 		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--with-isl-include=$(INSTALL_DIR)/deps/include \
 		--with-isl-lib=$(INSTALL_DIR)/deps/lib \
+		--with-pkgversion=tricore-gcc-toolchain \
 		--enable-languages=c,c++ \
 		--enable-c99 \
 		--enable-long-long \
@@ -431,6 +433,7 @@ stamps/build-gcc-stage2-only: $(GCC_SRCDIR) stamps/build-mpc
 		--with-mpfr-lib=$(INSTALL_DIR)/deps/lib \
 		--with-isl-include=$(INSTALL_DIR)/deps/include \
 		--with-isl-lib=$(INSTALL_DIR)/deps/lib \
+		--with-pkgversion=tricore-gcc-toolchain \
 		--enable-languages=c,c++ \
 		--enable-c99 \
 		--enable-long-long \
