@@ -12,6 +12,9 @@ jobs:
   build-gcc:
     name: GCC toolchain build
     runs-on: ubuntu-24.04
+    env:
+      CCACHE_DIR: ${{ github.workspace }}/.ccache
+      CCACHE_MAXSIZE: 1G
 
     steps:
       - name: Checkout
@@ -22,6 +25,23 @@ jobs:
       - name: Install dependencies
         run: |
           sudo ./scripts/install-apt-dependencies
+
+      - name: Prepare ccache directory
+        run: |
+          echo $CCACHE_DIR
+          mkdir -p "$CCACHE_DIR"
+
+      - name: Setup ccache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.ccache
+          key: ccache-build-gcc-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            ccache-build-gcc-${{ github.ref }}-
+            ccache-build-gcc-
+
+      - name: Enable ccache
+        run: echo "/usr/lib/ccache" >> "$GITHUB_PATH"
 
       - name: Build Linux
         run: |
@@ -65,6 +85,9 @@ jobs:
   build-qemu-linux:
     name: QEMU linux build
     runs-on: ubuntu-24.04
+    env:
+      CCACHE_DIR: ${{ github.workspace }}/.ccache
+      CCACHE_MAXSIZE: 1G
 
     steps:
       - name: Checkout
@@ -75,6 +98,21 @@ jobs:
       - name: Install dependencies
         run: |
           sudo ./scripts/install-apt-dependencies
+
+      - name: Prepare ccache directory
+        run: mkdir -p "$CCACHE_DIR"
+
+      - name: Setup ccache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.ccache
+          key: ccache-build-qemu-linux-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            ccache-build-qemu-linux-${{ github.ref }}-
+            ccache-build-qemu-linux-
+
+      - name: Enable ccache
+        run: echo "/usr/lib/ccache" >> "$GITHUB_PATH"
 
       - name: Build Linux
         run: |
@@ -98,6 +136,9 @@ jobs:
   build-qemu-win32:
     name: QEMU win32 build
     runs-on: ubuntu-24.04
+    env:
+      CCACHE_DIR: ${{ github.workspace }}/.ccache
+      CCACHE_MAXSIZE: 1G
 
     steps:
       - name: Checkout
@@ -108,6 +149,21 @@ jobs:
       - name: Install dependencies
         run: |
           sudo ./scripts/install-apt-dependencies
+
+      - name: Prepare ccache directory
+        run: mkdir -p "$CCACHE_DIR"
+
+      - name: Setup ccache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.ccache
+          key: ccache-build-qemu-win32-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            ccache-build-qemu-win32-${{ github.ref }}-
+            ccache-build-qemu-win32-
+
+      - name: Enable ccache
+        run: echo "/usr/lib/ccache" >> "$GITHUB_PATH"
 
       - name: Build Win32
         run: |
@@ -131,6 +187,9 @@ jobs:
   build-gdb-linux:
     name: GDB linux build
     runs-on: ubuntu-24.04
+    env:
+      CCACHE_DIR: ${{ github.workspace }}/.ccache
+      CCACHE_MAXSIZE: 1G
 
     steps:
       - name: Checkout
@@ -141,6 +200,21 @@ jobs:
       - name: Install dependencies
         run: |
           sudo ./scripts/install-apt-dependencies
+
+      - name: Prepare ccache directory
+        run: mkdir -p "$CCACHE_DIR"
+
+      - name: Setup ccache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.ccache
+          key: ccache-build-gdb-linux-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            ccache-build-gdb-linux-${{ github.ref }}-
+            ccache-build-gdb-linux-
+
+      - name: Enable ccache
+        run: echo "/usr/lib/ccache" >> "$GITHUB_PATH"
 
       - name: Build Linux
         run: |
@@ -165,6 +239,9 @@ jobs:
   build-gdb-win32:
     name: GDB win32 build
     runs-on: ubuntu-24.04
+    env:
+      CCACHE_DIR: ${{ github.workspace }}/.ccache
+      CCACHE_MAXSIZE: 1G
 
     steps:
       - name: Checkout
@@ -175,6 +252,21 @@ jobs:
       - name: Install dependencies
         run: |
           sudo ./scripts/install-apt-dependencies
+
+      - name: Prepare ccache directory
+        run: mkdir -p "$CCACHE_DIR"
+
+      - name: Setup ccache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.ccache
+          key: ccache-build-gdb-win32-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            ccache-build-gdb-win32-${{ github.ref }}-
+            ccache-build-gdb-win32-
+
+      - name: Enable ccache
+        run: echo "/usr/lib/ccache" >> "$GITHUB_PATH"
 
       - name: Build Win32
         run: |
