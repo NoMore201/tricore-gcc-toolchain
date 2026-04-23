@@ -1,5 +1,23 @@
 # Changelog
 
+## 13.4.1
+
+### Upstream fixes and improvements
+
+- [tricore-gcc] libatomic: Tricore support
+- [tricore-gcc] Fix for libstdc++ atomic support
+- [tricore-binutils-gdb] Fixing the location of the .gcc_except_table section in the default linker script
+
+### Toolchain changes
+
+- [tricore-gcc] tricore: use DECL_MD_FUNCTION_CODE for MD builtins and add
+  bounds asserts
+- Change version naming. Now using `x.y.z` where `x.y` is the current upstream
+  gcc release, while `z` represents tricore specific versioning
+- Fix build under WSL2
+- Build with custom pkgversion to differentiate between upstream releases
+- Update changelog
+
 ## 13.4-20250801
 
 ### Upstream fixes and improvements
