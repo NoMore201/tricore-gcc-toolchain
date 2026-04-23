@@ -1,5 +1,31 @@
 # Changelog
 
+## 13.4-20250801
+
+### Upstream fixes and improvements
+
+- Fix an ICE related to LRA (resolve #9).
+- FIX: Callinfo data structures need a dynamic allocation strategy
+- Added support for TC4Zx device
+- Fixed missing function from libgcc when soft-float is enabled
+- Added mforce-align-arrays to make forced arrays alignmen optional
+- Fixed wrong error message shown with --target-help
+- Added support for TC46xx family
+- Added memory mappings for tc4Dxx, tc48xx, tc46xx, tc45xx
+- Added support to TC48xx family
+- Added support for TC45xx family
+- Added flag to disable hardware floating point instructions 
+- Added tc49xx option for mcpu
+
+### Toolchain changes
+
+- Rebase tricore-gcc to version 13.4
+
+## 13.3-20250516
+
+- Rebase tricore-gcc to version 13.3
+- Improvements to build flags, targets and release process
+
 ## 11.3.1-20250101
 
 - Enable GDB build in tricore-binutils-gdb
