@@ -325,6 +325,7 @@ stamps/build-gcc-stage1: $(GCC_SRCDIR) stamps/build-binutils-tc
 		--enable-checking \
 		--enable-nls \
 		--enable-static \
+		--enable-libatomic \
 		--disable-threads \
 		--disable-shared \
 		$(CONFIGURE_LIBSTDCXX) \
@@ -394,6 +395,7 @@ stamps/build-gcc-stage2: $(GCC_SRCDIR) stamps/build-newlib
 		--enable-checking \
 		--enable-nls \
 		--enable-static \
+		--enable-libatomic \
 		--disable-threads \
 		--disable-shared \
 		$(CONFIGURE_LIBSTDCXX) \
@@ -440,6 +442,7 @@ stamps/build-gcc-stage2-only: $(GCC_SRCDIR) stamps/build-mpc
 		--enable-checking \
 		--enable-nls \
 		--enable-static \
+		--enable-libatomic \
 		--disable-threads \
 		--disable-shared \
 		$(CONFIGURE_LIBSTDCXX) \
