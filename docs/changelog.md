@@ -4,6 +4,7 @@
 
 ### Upstream fixes and improvements
 
+- [tricore-gcc] Tricore backend support for atomics
 - [tricore-gcc] libatomic: Tricore support
 - [tricore-gcc] Fix for libstdc++ atomic support
 - [tricore-binutils-gdb] Fixing the location of the .gcc_except_table section in the default linker script
