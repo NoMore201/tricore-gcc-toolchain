@@ -25,6 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo ./scripts/install-apt-dependencies
+          sudo apt install -y ccache
 
       - name: Prepare ccache directory
         run: |
@@ -32,12 +33,11 @@ jobs:
           mkdir -p "$CCACHE_DIR"
 
       - name: Setup ccache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.ccache
-          key: ccache-build-gcc-${{ github.ref }}-${{ github.sha }}
+          key: ccache-build-gcc-${{ github.run_id }}
           restore-keys: |
-            ccache-build-gcc-${{ github.ref }}-
             ccache-build-gcc-
 
       - name: Enable ccache
@@ -98,17 +98,17 @@ jobs:
       - name: Install dependencies
         run: |
           sudo ./scripts/install-apt-dependencies
+          sudo apt install -y ccache
 
       - name: Prepare ccache directory
         run: mkdir -p "$CCACHE_DIR"
 
       - name: Setup ccache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.ccache
-          key: ccache-build-qemu-linux-${{ github.ref }}-${{ github.sha }}
+          key: ccache-build-qemu-linux-${{ github.run_id }}
           restore-keys: |
-            ccache-build-qemu-linux-${{ github.ref }}-
             ccache-build-qemu-linux-
 
       - name: Enable ccache
@@ -149,17 +149,17 @@ jobs:
       - name: Install dependencies
         run: |
           sudo ./scripts/install-apt-dependencies
+          sudo apt install -y ccache
 
       - name: Prepare ccache directory
         run: mkdir -p "$CCACHE_DIR"
 
       - name: Setup ccache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.ccache
-          key: ccache-build-qemu-win32-${{ github.ref }}-${{ github.sha }}
+          key: ccache-build-qemu-win32-${{ github.run_id }}
           restore-keys: |
-            ccache-build-qemu-win32-${{ github.ref }}-
             ccache-build-qemu-win32-
 
       - name: Enable ccache
@@ -200,17 +200,17 @@ jobs:
       - name: Install dependencies
         run: |
           sudo ./scripts/install-apt-dependencies
+          sudo apt install -y ccache
 
       - name: Prepare ccache directory
         run: mkdir -p "$CCACHE_DIR"
 
       - name: Setup ccache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.ccache
-          key: ccache-build-gdb-linux-${{ github.ref }}-${{ github.sha }}
+          key: ccache-build-gdb-linux-${{ github.run_id }}
           restore-keys: |
-            ccache-build-gdb-linux-${{ github.ref }}-
             ccache-build-gdb-linux-
 
       - name: Enable ccache
@@ -252,17 +252,17 @@ jobs:
       - name: Install dependencies
         run: |
           sudo ./scripts/install-apt-dependencies
+          sudo apt install -y ccache
 
       - name: Prepare ccache directory
         run: mkdir -p "$CCACHE_DIR"
 
       - name: Setup ccache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.ccache
-          key: ccache-build-gdb-win32-${{ github.ref }}-${{ github.sha }}
+          key: ccache-build-gdb-win32-${{ github.run_id }}
           restore-keys: |
-            ccache-build-gdb-win32-${{ github.ref }}-
             ccache-build-gdb-win32-
 
       - name: Enable ccache
